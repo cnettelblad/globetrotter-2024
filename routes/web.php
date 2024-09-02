@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SubmissionController;
+use App\Models\Contestant;
 use App\Models\Submission;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -12,26 +14,7 @@ Route::get('/', function () {
         'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
-        'contestants' => Submission::all()->groupBy('discord_id')->map(
-            function ($submissions) {
-                return [
-                    'nickname' => $submissions->first()->nickname,
-                    'username' => $submissions->first()->username,
-                    'avatar' => $submissions->first()->avatar,
-                    'count' => $submissions->count(),
-                    'submissions' => $submissions->map(
-                        function ($submission) {
-                            return [
-                                'month' => $submission->month,
-                                'submission' => $submission->submission,
-                                'image' => $submission->image,
-                                'created_at' => $submission->created_at->diffForHumans(),
-                            ];
-                        }
-                    ),
-                ];
-            }
-        )->sortByDesc('count'),
+        'contestants' => Contestant::with('submissions')->get(),
     ]);
 });
 
@@ -43,6 +26,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::resource('submissions', SubmissionController::class)->only(['index', 'store', 'destroy']);
 });
 
 require __DIR__ . '/auth.php';

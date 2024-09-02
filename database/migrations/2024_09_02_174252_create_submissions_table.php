@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('submissions', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->bigInteger('discord_id');
+            $table->foreignUuid('contestant_id')->constrained('contestants');
             $table->enum(
                 'month',
                 [

@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { Head, Link } from '@inertiajs/vue3';
 import SubmissionCard from '@/Components/SubmissionCard.vue';
+import TextInput from '@/Components/TextInput.vue';
+import { ref } from 'vue';
 
 interface Submission {
     id: string;
@@ -15,12 +17,11 @@ interface Submission {
     avatar: string;
 }
 
-defineProps<{
+const props = defineProps<{
     canLogin?: boolean;
     canRegister?: boolean;
     laravelVersion: string;
     phpVersion: string;
-    submissions: Submission[];
     contestants: array;
 }>();
 
@@ -30,16 +31,36 @@ function handleImageError() {
     document.getElementById('docs-card-content')?.classList.add('!flex-row');
     document.getElementById('background')?.classList.add('!hidden');
 }
+
+function filteredContestants() {
+    if (!props.contestants) return [];
+    return props.contestants.filter((contestant) => {
+        if (search.length === 0) return true;
+        const lcSearch = search.value.toLowerCase();
+        if (contestant.nickname && contestant.nickname.toLowerCase().includes(lcSearch)) return true;
+        if (contestant.username && contestant.username.toLowerCase().includes(lcSearch)) return true;
+        if (contestant.discord_id && contestant.discord_id.toString().includes(lcSearch)) return true;
+    });
+}
+
+const search = ref('');
 </script>
 
 <template>
     <Head title="Welcome" />
     <div class="bg-gray-50">
         <div
-            class="relative min-h-screen flex flex-col items-center justify-center selection:bg-[#FF2D20] selection:text-white"
+            class="relative min-h-screen flex flex-col items-center selection:bg-[#FF2D20] selection:text-white"
         >
             <div class="relative w-full max-w-2xl px-6 lg:max-w-7xl">
                 <header class="grid grid-cols-2 items-center gap-2 py-10 lg:grid-cols-3">
+                    <div class="flex lg:justify-start lg:col-start-1">
+                        <TextInput
+                            v-model="search"
+                            placeholder="Search by nickname, username, or Discord ID"
+                            class="w-full"
+                        />
+                    </div>
                     <div class="flex lg:justify-center lg:col-start-2">
                         Wanderlust Globetrotter
                     </div>
@@ -57,15 +78,7 @@ function handleImageError() {
                                 :href="route('login')"
                                 class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20]"
                             >
-                                Log in
-                            </Link>
-
-                            <Link
-                                v-if="canRegister"
-                                :href="route('register')"
-                                class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20]"
-                            >
-                                Register
+                                Admin
                             </Link>
                         </template>
                     </nav>
@@ -74,32 +87,13 @@ function handleImageError() {
 
                 <main class="mt-6">
                     <div class="grid gap-6 grid-cols-2 lg:grid-cols-4">
-                        <div v-for="contestant in contestants" :key="contestant.id">
+                        <div v-for="contestant in filteredContestants()" :key="contestant.id">
                             <SubmissionCard
                                 :nickname="contestant.nickname"
                                 :username="contestant.username"
                                 :avatar="contestant.avatar"
                                 :submissions="contestant.submissions"
                             />
-                            <!-- <div class="rounded-lg bg-cyan-900 ring-1 ring-cyan-700 max-w-[300px] p-4">
-                                <div class="flex flex-row gap-4 items-center">
-                                    <img :src="contestant[0].avatar" alt="avatar" class="w-16 h-16 rounded-full" />
-                                    <div class="flex flex-col">
-                                        <h2 class="text-xl font-semibold text-white">{{ contestant[0].nickname }}</h2>
-                                        <p class="text-white text-sm">{{ contestant[0].username }}</p>
-                                    </div>
-                                </div>
-
-                                <button @click="contestant.expanded = !contestant.expanded" class="text-purple-200 hover:text-purple-400">
-                                    {{ contestant.expanded ? '- Hide' : '+ Show' }} Submissions
-                                </button>
-
-                                <div v-if="contestant.expanded" class="mt-4">
-                                    <ul>
-                                        <li v-for="submission in contestant" :key="submission.id">{{ submission.submission }}</li>
-                                    </ul>
-                                </div>
-                            </div> -->
                         </div>
                     </div>
                 </main>

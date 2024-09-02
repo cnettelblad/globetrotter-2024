@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import AddSubmissionForm from '@/Pages/AddSubmissionForm.vue';
 import { Head } from '@inertiajs/vue3';
 </script>
 
@@ -10,6 +11,8 @@ import { Head } from '@inertiajs/vue3';
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">Dashboard</h2>
         </template>
+
+        <AddSubmissionForm />
 
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">

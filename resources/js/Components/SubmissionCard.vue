@@ -39,7 +39,7 @@ const open = ref(false);
 
         <!-- User info -->
         <div class="flex flex-row items-center px-4 py-5 sm:px-6">
-            <img :src="props.avatar" alt="" class="h-16 w-16 rounded-full">
+            <img :src="props.avatar" alt="" class="h-16 w-16 rounded-full ring-1 ring-gray-900">
             <div class="px-4 py-5 sm:px-6">
                 <h3 class="text-lg font-medium leading-6 whitespace-nowrap text-gray-900">{{ props.nickname ?? props.username }}</h3>
                 <p class="mt-1 max-w-2xl text-sm text-gray-500">{{ props.username }}</p>

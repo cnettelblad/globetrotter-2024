@@ -2,8 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Models\Contestant;
 use App\Models\Submission;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Collection;
 
 class SubmissionSeeder extends Seeder
 {
@@ -31,14 +33,22 @@ class SubmissionSeeder extends Seeder
 
         $header = array_shift($csv);
         foreach ($csv as $row) {
-            $data = array_combine($header, $row);
+            $data = collect(array_combine($header, $row));
+            $contestant = Contestant::where(
+                'discord_id',
+                $data->get('ID')
+            )->first();
+
+            if (!$contestant) {
+                $contestant = Contestant::fromDiscordId($data->get('ID'));
+            }
 
             foreach ($months as $month) {
-                if (isset($data[$month]) && $data[$month] !== '') {
-                    Submission::create([
-                        'discord_id' => $data['ID'],
+                if ($data->has($month) && $data->get($month)) {
+                    $contestant->submissions()->create([
                         'month' => $month,
-                        'submission' => $data[$month],
+                        'submission' => $data->get($month),
+                        'image' => $data->get('Image') ?? null
                     ]);
                 }
             }
