@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Models\Submission;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -11,6 +12,26 @@ Route::get('/', function () {
         'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
+        'contestants' => Submission::all()->groupBy('discord_id')->map(
+            function ($submissions) {
+                return [
+                    'nickname' => $submissions->first()->nickname,
+                    'username' => $submissions->first()->username,
+                    'avatar' => $submissions->first()->avatar,
+                    'count' => $submissions->count(),
+                    'submissions' => $submissions->map(
+                        function ($submission) {
+                            return [
+                                'month' => $submission->month,
+                                'submission' => $submission->submission,
+                                'image' => $submission->image,
+                                'created_at' => $submission->created_at->diffForHumans(),
+                            ];
+                        }
+                    ),
+                ];
+            }
+        )->sortByDesc('count'),
     ]);
 });
 
@@ -24,4 +45,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
