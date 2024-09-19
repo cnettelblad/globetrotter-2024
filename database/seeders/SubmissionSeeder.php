@@ -39,6 +39,8 @@ class SubmissionSeeder extends Seeder
                 $data->get('ID')
             )->first();
 
+            echo "Processing {$data->get('ID')}\n";
+
             if (!$contestant) {
                 $contestant = Contestant::fromDiscordId($data->get('ID'));
             }

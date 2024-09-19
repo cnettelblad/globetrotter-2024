@@ -1,15 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import { Link } from '@inertiajs/vue3';
-
-interface Submission {
-    id: string;
-    month: string;
-    submission: string;
-    image?: string;
-    created_at: string;
-    updated_at: string;
-}
+import { Submission } from '@/types';
 
 const props = defineProps<{
     nickname?: string;
@@ -18,11 +10,27 @@ const props = defineProps<{
     submissions: Submission[];
 }>();
 
-const classes = computed(() =>
-    props.active
-        ? 'inline-flex items-center px-1 pt-1 border-b-2 border-indigo-400 text-sm font-medium leading-5 text-gray-900 focus:outline-none focus:border-indigo-700 transition duration-150 ease-in-out'
-        : 'inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out'
-);
+const months = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+];
+
+const submissions = computed(() => {
+    return months.map((month) => {
+        const entry = props.submissions.find((submission) => submission.month === month);
+        return { month, submission: entry?.submission };
+    });
+});
 
 const open = ref(false);
 </script>
@@ -39,31 +47,34 @@ const open = ref(false);
 
         <!-- User info -->
         <div class="flex flex-row items-center px-4 py-5 sm:px-6">
-            <img :src="props.avatar" alt="" class="h-16 w-16 rounded-full ring-1 ring-gray-900">
-            <div class="px-4 py-5 sm:px-6">
+            <img :src="props.avatar" alt="" class="h-16 w-16 my-4 rounded-full ring-1 ring-gray-900">
+            <div class="px-4 py-5 sm:px-6 overflow-hidden">
                 <h3 class="text-lg font-medium leading-6 whitespace-nowrap text-gray-900">{{ props.nickname ?? props.username }}</h3>
-                <p class="mt-1 max-w-2xl text-sm text-gray-500">{{ props.username }}</p>
+                <p v-if="props.nickname" class="mt-1 max-w-2xl text-sm text-gray-500">{{ props.username }}</p>
             </div>
         </div>
 
         <div class="border-t border-gray-200">
             <dl>
-                <div class="bg-gray-50 px-4 py-5">
-                    <button @click="open = !open" class="text-sm font-medium text-gray-500">
+                <div class="bg-gray-50" :class=" open ? 'pb-4' : null ">
+                    <button @click="open = !open" class="text-sm font-medium w-full py-5 text-gray-500">
                         {{ open ? '- Hide' : '+ Show' }} Submissions
                     </button>
-                    <dd class="mt-1 text-sm text-gray-900 sm:col-span-2">
+                    <dd class="text-sm text-gray-900 sm:col-span-2">
                         <ul
                             v-show="open"
                             role="list"
-                            class="divide-ydivide-gray-200 rounded-md border border-gray-200"
+                            class="divide-y divide-gray-200 rounded-md border border-gray-200 mx-4"
                         >
-                            <li v-for="submission in props.submissions" :key="submission.id" class="flex items-center justify-between py-3 pl-3 pr-4 text-sm">
+                            <li
+                                v-for="submission in submissions"
+                                class="flex items-center justify-between py-3 pl-3 pr-4 text-sm"
+                            >
+
                                 <div class="flex w-0 flex-1 items-center">
-                                    <!-- <img :src="submission.image" alt="" class="flex-shrink-0 h-6 w-6 rounded-full"> -->
-                                    <span class="ml-2 truncate">{{ submission.month }}</span>
+                                    <span :class="{'line-through': !submission.submission}" class="ml-2 truncate">{{ submission.month }}</span>
                                 </div>
-                                <div class="ml-4 flex-shrink-0">
+                                <div v-if="submission.submission" class="ml-4 flex-shrink-0">
                                     <p class="font-medium text-gray-900">{{ submission.submission }}</p>
                                 </div>
                             </li>

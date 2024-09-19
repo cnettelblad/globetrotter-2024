@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ContestantController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SubmissionController;
 use App\Models\Contestant;
@@ -28,6 +29,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::resource('submissions', SubmissionController::class)->only(['index', 'store', 'destroy']);
+    Route::resource('contestants', ContestantController::class)->only(['index', 'show']);
+    Route::post('contestants/import', [ContestantController::class, 'import'])->name('contestants.import');
 });
 
 require __DIR__ . '/auth.php';

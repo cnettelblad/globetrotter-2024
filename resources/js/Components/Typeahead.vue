@@ -11,6 +11,10 @@ onMounted(() => {
     }
 });
 
+defineProps<{
+    contestants: array;
+}>();
+
 const handleInput = (event: Event) => {
     console.log(event);
     model.value = (event.target as HTMLInputElement).value;
