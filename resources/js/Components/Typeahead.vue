@@ -1,8 +1,8 @@
 <script setup lang="ts">
+import { Contestant } from '@/types';
 import { onMounted, ref } from 'vue';
 
-// const model = defineModel<string>({ required: true });
-
+const model = defineModel<string>({ required: true });
 const input = ref<HTMLInputElement | null>(null);
 
 onMounted(() => {
@@ -11,42 +11,42 @@ onMounted(() => {
     }
 });
 
-defineProps<{
-    contestants: array;
+const props = defineProps<{
+    contestants: Contestant[];
 }>();
 
 const handleInput = (event: Event) => {
-    console.log(event);
     model.value = (event.target as HTMLInputElement).value;
 };
 
 const filteredContestants = () => {
-    if (!props.contestants) return [];
-    return props.contestants.filter((contestant) => {
-        if (search.length === 0) return true;
-        const lcSearch = search.value.toLowerCase();
-        if (contestant.nickname && contestant.nickname.toLowerCase().includes(lcSearch)) return true;
-        if (contestant.username && contestant.username.toLowerCase().includes(lcSearch)) return true;
-        if (contestant.discord_id && contestant.discord_id.toString().includes(lcSearch)) return true;
+    return props.contestants?.filter((contestant) => {
+        return (
+            contestant.nickname?.toLowerCase().includes(model.value.toLowerCase()) ||
+            contestant.username?.toLowerCase().includes(model.value.toLowerCase()) ||
+            contestant.discord_id?.toString().toLowerCase().includes(model.value.toLowerCase())
+        );
     });
-}
+};
 
-const search = ref('');
+const search = ref<string>('');
 
 defineExpose({ focus: () => input.value?.focus() });
 </script>
 
 <template>
-    <input
-        class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
-        v-model="search"
-        ref="input"
-    />
-    <li
-        v-for="contestant in filteredContestants"
-        :key="country.name"
-        @click="selectCountry(country.name)"
-    >
-    {{ country.name }}
-    </li>
+    <div>
+        <input
+            type="text"
+            ref="input"
+            v-model="search"
+            @input="handleInput"
+            placeholder="Search contestants..."
+        />
+        <ul v-if="filteredContestants">
+            <li v-for="contestant in filteredContestants()" :key="contestant.id">
+                {{ contestant.nickname || contestant.username || contestant.discord_id }}
+            </li>
+        </ul>
+    </div>
 </template>

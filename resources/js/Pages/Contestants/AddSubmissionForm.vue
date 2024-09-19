@@ -4,7 +4,9 @@ import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import Typeahead from '@/Components/Typeahead.vue';
+import { Contestant } from '@/types';
 import { useForm } from '@inertiajs/vue3';
+import axios from 'axios';
 import { ref } from 'vue';
 
 const form = useForm({
@@ -13,6 +15,14 @@ const form = useForm({
     submission: '',
     image: '',
 });
+
+const contestants = ref<Contestant[]>([]);
+
+const getContestants = () => {
+    axios.get(route('contestans.index')).then((response) => {
+        contestants.value = response.data;
+    });
+};
 
 const addSubmission = () => {
     form.put(route('submissions.store'), {
@@ -41,10 +51,10 @@ const addSubmission = () => {
             <div>
                 <InputLabel for="contestant" value="Contestant" />
 
-                <TextInput
+                <Typeahead
                     id="contestant"
                     v-model="form.contestant"
-                    ref="contestant"
+                    :contestants="contestants"
                     class="mt-1 block w-full"
                 />
 
