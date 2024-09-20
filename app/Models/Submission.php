@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\Month;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -25,6 +26,10 @@ class Submission extends Model
         'month',
         'submission',
         'image'
+    ];
+
+    protected $casts = [
+        'month' => Month::class,
     ];
 
     public function contestant(): BelongsTo

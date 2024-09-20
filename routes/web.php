@@ -28,8 +28,9 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::resource('submissions', SubmissionController::class)->only(['index', 'store', 'destroy']);
     Route::resource('contestants', ContestantController::class)->only(['index', 'show']);
+    Route::resource('contestants.submissions', SubmissionController::class)->shallow();
+
     Route::post('contestants/import', [ContestantController::class, 'import'])->name('contestants.import');
 });
 

@@ -20,7 +20,7 @@ defineExpose({ focus: () => input.value?.focus() });
 
 <template>
     <select v-model="model" ref="input" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
-        <option disabled value="" v-if="allowEmpty">Please select one</option>
+        <option disabled value="" v-if="!allowEmpty">Please select one</option>
         <option
             v-for="option in options"
             :value="typeof option === 'object' ? option.value : option"

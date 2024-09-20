@@ -41,7 +41,10 @@ const getContestants = () => {
 };
 
 const addSubmission = () => {
-    form.put(route('submissions.store'), {
+    form.post(route(
+        'contestants.submissions.store',
+        {contestant: form.contestant}
+    ), {
         preserveScroll: true,
         onSuccess: () => {
             form.reset();

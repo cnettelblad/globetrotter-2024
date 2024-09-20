@@ -6,7 +6,6 @@ use App\Http\Requests\ImportContestantsRequest;
 use App\Jobs\ImportContestantsFromCsv;
 use App\Models\Contestant;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 
 class ContestantController extends Controller
@@ -78,8 +77,9 @@ class ContestantController extends Controller
     public function import(ImportContestantsRequest $request)
     {
         $csv = $request->file('csv')->get();
+
         ImportContestantsFromCsv::dispatch($csv);
 
-        return Redirect::route('dashboard');
+        return redirect()->route('dashboard');
     }
 }

@@ -59,7 +59,7 @@ defineExpose({ focus: () => input.value?.focus() });
 
 <template>
     <div v-if="selectedContestant">
-        <ContestantCard :contestant="selectedContestant" />
+        <ContestantCard :contestant="selectedContestant" class="w-64" />
         <button
             @click="clearSelection"
             class="mt-4 bg-red-500 hover:bg-red-600 text-white font-semibold py-1 px-2 rounded"
