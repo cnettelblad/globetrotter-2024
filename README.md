@@ -7,7 +7,7 @@ A web app that helps keeping track of- and registering submissions for Globetrot
 -   PHP >= 8.2
 -   [Composer](https://getcomposer.org)
 -   [Docker](https://docker.com)
--   [Discord Bot Token](https://discord.com/developers/applications)
+-   [Discord Bot Token](https://discord.com/developers/applications) (recommended)
 
 ## Installation
 
