@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
+import InputError from '@/Components/Form/InputError.vue';
+import InputLabel from '@/Components/Form/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
-import Typeahead from '@/Components/Typeahead.vue';
+import TextInput from '@/Components/Form/TextInput.vue';
+import Typeahead from '@/Components/Form/Typeahead.vue';
 import { Contestant } from '@/types';
 import { useForm } from '@inertiajs/vue3';
 import axios from 'axios';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 
 const form = useForm({
     contestant: '',
@@ -19,7 +19,7 @@ const form = useForm({
 const contestants = ref<Contestant[]>([]);
 
 const getContestants = () => {
-    axios.get(route('contestans.index')).then((response) => {
+    axios.get(route('api.v1.contestants.index')).then((response) => {
         contestants.value = response.data;
     });
 };
@@ -34,6 +34,10 @@ const addSubmission = () => {
         },
     });
 };
+
+onMounted(() => {
+    getContestants();
+});
 
 </script>
 
@@ -55,6 +59,7 @@ const addSubmission = () => {
                     id="contestant"
                     v-model="form.contestant"
                     :contestants="contestants"
+                    placeholder="Search for a contestant"
                     class="mt-1 block w-full"
                 />
 

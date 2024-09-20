@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import FileInput from '@/Components/FileInput.vue';
-import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
+import FileInput from '@/Components/Form/FileInput.vue';
+import InputError from '@/Components/Form/InputError.vue';
+import InputLabel from '@/Components/Form/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
-import Typeahead from '@/Components/Typeahead.vue';
+import TextInput from '@/Components/Form/TextInput.vue';
+import Typeahead from '@/Components/Form/Typeahead.vue';
 import { useForm } from '@inertiajs/vue3';
 import { ref } from 'vue';
 

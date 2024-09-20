@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Head, Link } from "@inertiajs/vue3";
 import SubmissionCard from "@/Components/SubmissionCard.vue";
-import TextInput from "@/Components/TextInput.vue";
+import TextInput from "@/Components/Form/TextInput.vue";
 import { ref } from "vue";
 import { Contestant } from "@/types";
 
