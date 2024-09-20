@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\Client\RequestException;
@@ -13,7 +14,7 @@ use Illuminate\Support\Facades\Storage;
 
 class Contestant extends Model
 {
-    use HasUuids;
+    use HasUuids, HasFactory;
 
     protected $fillable = [
         'discord_id',
@@ -77,7 +78,7 @@ class Contestant extends Model
     /**
      * Update the contestant's information from Discord.
      */
-    public function updateFromDiscord(): self
+    public function syncDiscord(): self
     {
         $response = self::fetchDiscordUser($this->discord_id)->json();
 
@@ -97,14 +98,18 @@ class Contestant extends Model
     {
         $response = self::fetchDiscordUser($id)->json();
 
-        return self::create([
-            'discord_id' => $id,
-            'username' => $response['username'],
-            'nickname' => $response['global_name'] ?? null,
-            'avatar' => $response['avatar']
-                ? self::downloadDiscordAvatar($id, $response['avatar'])
-                : null
-        ]);
+        return self::updateOrCreate(
+            [
+                'discord_id' => $id
+            ],
+            [
+                'username' => $response['username'],
+                'nickname' => $response['global_name'] ?? null,
+                'avatar' => $response['avatar']
+                    ? self::downloadDiscordAvatar($id, $response['avatar'])
+                    : null
+            ]
+        );
     }
 
     /**
