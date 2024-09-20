@@ -13,6 +13,7 @@ export interface Contestant {
     nickname: string;
     username: string;
     avatar: string;
+    score: number;
     submissions: Submission[];
 }
 

@@ -8,6 +8,7 @@ import { Contestant } from '@/types';
 import { useForm } from '@inertiajs/vue3';
 import axios from 'axios';
 import { onMounted, ref } from 'vue';
+import Dropdown from '@/Components/Form/Dropdown.vue';
 
 const form = useForm({
     contestant: '',
@@ -17,6 +18,21 @@ const form = useForm({
 });
 
 const contestants = ref<Contestant[]>([]);
+
+const months = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December'
+];
 
 const getContestants = () => {
     axios.get(route('api.v1.contestants.index')).then((response) => {
@@ -79,10 +95,10 @@ onMounted(() => {
                 </div>
                 <div>
                     <InputLabel for="month" value="Month" />
-                        <TextInput
+                        <Dropdown
                             id="month"
                             v-model="form.month"
-                            ref="month"
+                            :options="months"
                             class="mt-1 block w-full"
                         />
                     <InputError :message="form.errors.month" class="mt-2" />
