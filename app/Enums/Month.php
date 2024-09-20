@@ -4,16 +4,16 @@ namespace App\Enums;
 
 enum Month: string
 {
-    case January = 'January';
-    case February = 'February';
-    case March = 'March';
-    case April = 'April';
-    case May = 'May';
-    case June = 'June';
-    case July = 'July';
-    case August = 'August';
-    case September = 'September';
-    case October = 'October';
-    case November = 'November';
-    case December = 'December';
+    case JANUARY = 'January';
+    case FEBRUARY = 'February';
+    case MARCH = 'March';
+    case APRIL = 'April';
+    case MAY = 'May';
+    case JUNE = 'June';
+    case JULY = 'July';
+    case AUGUST = 'August';
+    case SEPTEMBER = 'September';
+    case OCTOBER = 'October';
+    case NOVEMBER = 'November';
+    case DECEMBER = 'December';
 }
