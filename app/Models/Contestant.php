@@ -120,7 +120,7 @@ class Contestant extends Model
         $url = "https://discord.com/api/v10/users/{$id}";
 
         return Http::withHeaders([
-            'Authorization' => 'Bot ' . env('DISCORD_BOT_TOKEN'),
+            'Authorization' => 'Bot ' . env('DISCORD_TOKEN'),
             'Content-Type' => 'application/json'
         ])->retry(
             3,
