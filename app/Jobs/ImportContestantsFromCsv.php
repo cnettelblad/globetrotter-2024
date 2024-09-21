@@ -3,6 +3,8 @@
 namespace App\Jobs;
 
 use App\Models\Contestant;
+use App\Models\Destination;
+use App\Models\Submission;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Foundation\Queue\Queueable;
@@ -10,7 +12,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
 
-class ImportContestantsFromCsv implements ShouldQueue
+class ImportContestantsFromCsv // implements ShouldQueue
 {
     use Queueable;
 
@@ -69,17 +71,37 @@ class ImportContestantsFromCsv implements ShouldQueue
             }
 
             foreach ($months as $month) {
-                if (!$data->has($month) || $contestant->submissions?->contains('month', $month)) {
+                if (!$data->get($month) || !is_string($data->get($month))) {
                     continue;
                 }
 
-                if ($data->get($month)) {
-                    $contestant->submissions()->create([
-                        'month' => $month,
-                        'submission' => $data->get($month),
-                        'image' => $data->get('image') ?? null
-                    ]);
+                if ($contestant->submissions->contains('month', $month)) {
+                    continue;
                 }
+
+                $destination = Destination::whereLike(
+                    'name',
+                    "%" . $data->get($month) . "%"
+                )->first();
+
+                if (!$destination) {
+                    /**
+                     * @todo Failed imports should be stored and handled.
+                     */
+                    Log::notice("Failed to find destination", [
+                        'destination' => $data->get($month),
+                        'contestant' => $contestant->username
+                    ]);
+                    continue;
+                }
+
+                $submission = new Submission([
+                    'month' => $month,
+                ]);
+
+                $submission->destination()->associate($destination);
+                $submission->contestant()->associate($contestant);
+                $submission->save();
             }
         }
     }
