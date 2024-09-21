@@ -4,17 +4,15 @@ use App\Http\Controllers\ContestantController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SubmissionController;
 use App\Models\Contestant;
+use App\Models\ImportFailure;
 use App\Models\Submission;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::get('/', function () {
-    return Inertia::render('Welcome', [
+    return Inertia::render('Home', [
         'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
         'contestants' => Contestant::with('submissions')->get(),
     ]);
 });
@@ -31,6 +29,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/submissions', [SubmissionController::class, 'all'])->name('submissions.index');
     Route::resource('contestants', ContestantController::class)->only(['index', 'show']);
     Route::resource('contestants.submissions', SubmissionController::class)->shallow();
+
+    Route::get('/import', function () {
+        return Inertia::render('Import/Import', [
+            'failures' => ImportFailure::with('contestant')->get(),
+        ]);
+    })->name('import.index');
 
     Route::post('contestants/import', [ContestantController::class, 'import'])->name('contestants.import');
 });

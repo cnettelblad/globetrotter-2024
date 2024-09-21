@@ -37,7 +37,7 @@ const open = ref(false);
 </script>
 
 <template>
-    <div :class="open ? 'row-span-4' : null">
+    <div class="transition" :class="open ? 'row-span-4' : null">
         <div class="relative bg-white shadow overflow-hidden sm:rounded-lg">
             <!-- Count badge -->
             <div class="absolute top-1 right-2">

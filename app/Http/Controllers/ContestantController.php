@@ -67,19 +67,4 @@ class ContestantController extends Controller
     {
         //
     }
-
-    /**
-     * Import contestants from a CSV file.
-     *
-     * @param Request $request
-     * @return void
-     */
-    public function import(ImportContestantsRequest $request)
-    {
-        $csv = $request->file('csv')->get();
-
-        ImportContestantsFromCsv::dispatch($csv);
-
-        return redirect()->route('dashboard');
-    }
 }

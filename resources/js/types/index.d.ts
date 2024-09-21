@@ -33,6 +33,14 @@ export interface Destination {
     code: string;
 }
 
+export interface ImportFailure {
+    id: string;
+    key: string;
+    value: string;
+    error: string;
+    contestant?: Contestant;
+}
+
 export type PageProps<T extends Record<string, unknown> = Record<string, unknown>> = T & {
     auth: {
         user: User;

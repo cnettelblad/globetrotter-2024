@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Models\Contestant;
 use App\Models\Destination;
+use App\Models\ImportFailure;
 use App\Models\Submission;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -66,7 +67,17 @@ class ImportContestantsFromCsv // implements ShouldQueue
             )->with('submissions')->first();
 
             if (!$contestant) {
-                Log::info("Importing discord user: {$data->get('ID')}");
+                if (!is_int($data->get('ID'))) {
+                    $failure = new ImportFailure([
+                        'key' => 'ID',
+                        'value' => $data->get('ID'),
+                        'error' => "Invalid ID for Discord user",
+                    ]);
+                    $failure->save();
+
+                    continue;
+                }
+
                 $contestant = Contestant::fromDiscordId($data->get('ID'));
             }
 
@@ -85,13 +96,14 @@ class ImportContestantsFromCsv // implements ShouldQueue
                 )->first();
 
                 if (!$destination) {
-                    /**
-                     * @todo Failed imports should be stored and handled.
-                     */
-                    Log::notice("Failed to find destination", [
-                        'destination' => $data->get($month),
-                        'contestant' => $contestant->username
+                    $failure = new ImportFailure([
+                        'key' => $month,
+                        'value' => $data->get($month),
+                        'error' => "Destination not found",
                     ]);
+                    $failure->contestant()->associate($contestant);
+                    $failure->save();
+
                     continue;
                 }
 
