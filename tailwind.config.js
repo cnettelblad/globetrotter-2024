@@ -14,6 +14,11 @@ export default {
         extend: {
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                emoji: [
+                    'Noto Color Emoji',
+                    'Segoe UI Emoji',
+                    ...defaultTheme.fontFamily.sans
+                ],
             },
         },
     },
