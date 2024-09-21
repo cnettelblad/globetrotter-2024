@@ -9,12 +9,13 @@ import { useForm } from '@inertiajs/vue3';
 import axios from 'axios';
 import { onMounted, ref } from 'vue';
 import Dropdown from '@/Components/Form/Dropdown.vue';
+import FileInput from '@/Components/Form/FileInput.vue';
 
 const form = useForm({
     contestant: '',
     month: '',
     submission: '',
-    image: '',
+    image: null,
 });
 
 const contestants = ref<Contestant[]>([]);
@@ -106,6 +107,17 @@ onMounted(() => {
                         />
                     <InputError :message="form.errors.month" class="mt-2" />
                 </div>
+            </div>
+
+            <div>
+                <InputLabel for="image" value="Image" />
+                    <FileInput
+                        id="image"
+                        v-model="form.image"
+                        accept=".jpg,.jpeg,.png"
+                        class="mt-1 block w-full"
+                    />
+                <InputError :message="form.errors.image" class="mt-2" />
             </div>
 
             <div class="flex items-center gap-4">

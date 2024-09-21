@@ -14,15 +14,23 @@ export interface Contestant {
     username: string;
     avatar: string;
     score: number;
-    submissions: Submission[];
+    submissions?: Submission[];
 }
 
 export interface Submission {
     id: string;
-    contestant_id: string;
     image?: string;
     month: string;
-    submission: string;
+    contestant?: Contestant;
+    destination?: Destination;
+}
+
+export interface Destination {
+    id: string;
+    name: string;
+    emoji: string;
+    type: string;
+    code: string;
 }
 
 export type PageProps<T extends Record<string, unknown> = Record<string, unknown>> = T & {

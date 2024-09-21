@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { defineProps, defineEmits } from 'vue';
-import { Contestant } from '@/types';
+import { Contestant, Submission } from '@/types';
 import { ref } from 'vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head } from '@inertiajs/vue3';
 
 defineProps<{
-    contestants: Contestant[];
+    submissions: Submission[];
 }>();
 
 defineEmits(['select']);
@@ -25,54 +25,31 @@ const input = ref<HTMLInputElement | null>(null);
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
 
-                <!-- <input
-                    class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
-                    ref="input"
-                /> -->
-
                 <!-- List of contestants -->
                 <table class="table-auto w-full">
                     <thead>
                         <tr>
-                            <th class="border-b border-gray-200 text-left px-6 py-3">Score</th>
-                            <th class="border-b border-gray-200 text-left px-6 py-3">
-                                Username
-                            </th>
-                            <th class="border-b border-gray-200 text-left px-6 py-3">Discord ID</th>
+                            <th class="border-b border-gray-200 text-left px-6 py-3">Contestant</th>
+                            <th class="border-b border-gray-200 text-left px-6 py-3">Month</th>
+                            <th class="border-b border-gray-200 text-left px-6 py-3">Country</th>
+                            <th class="border-b border-gray-200 text-left px-6 py-3">Image</th>
                             <th class="border-b border-gray-200 text-left px-6 py-3">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr
-                            v-for="contestant in contestants"
-                            :key="contestant.id"
-                            @click="$emit('select', contestant)"
+                            v-for="submission in submissions"
+                            :key="submission.id"
+                            @click="$emit('select', submission)"
                             class="border-b border-gray-200 hover:bg-gray-50"
                         >
-                            <td class="px-6 py-3">
-                                {{ contestant.score }}
-                            </td>
-                            <td class="px-6 py-3">
-                                <div class="flex items-center">
-                                    <img
-                                        :src="contestant.avatar"
-                                        alt="Avatar"
-                                        class="h-8 w-8 rounded-full"
-                                    />
-                                    <div class="ml-4">
-                                        <div class="text-sm font-medium text-gray-900">
-                                            {{ contestant.username }}
-                                        </div>
-                                        <div class="text-sm text-gray-500">
-                                            {{ contestant.nickname }}
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="px-6 py-3">{{ contestant.discord_id }}</td>
+                            <td class="px-6 py-3">{{ submission.contestant?.username }}</td>
+                            <td class="px-6 py-3">{{ submission.month }}</td>
+                            <td class="px-6 py-3">{{ submission.destination?.name ?? 'Unknown' }}</td>
+                            <td class="px-6 py-3">{{ submission.image ? '✅' : '❌' }}</td>
                             <td class="px-6 py-3">
                                 <button
-                                    @click="$emit('select', contestant)"
+                                    @click="$emit('select', submission.contestant)"
                                     class="text-indigo-600 hover:text-indigo-900 w-6 h-6"
                                 >
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">

@@ -6,6 +6,7 @@ use App\Http\Requests\CreateSubmissionRequest;
 use App\Http\Requests\UpdateSubmissionRequest;
 use App\Models\Contestant;
 use App\Models\Submission;
+use Inertia\Inertia;
 
 class SubmissionController extends Controller
 {
@@ -17,6 +18,16 @@ class SubmissionController extends Controller
         return view('submissions.index', [
             'contestant' => $contestant,
             'submissions' => $contestant->submissions
+        ]);
+    }
+
+    /**
+     * Display a complete listing of the resource.
+     */
+    public function all()
+    {
+        return Inertia::render('Submissions/List', [
+            'submissions' => Submission::with('contestant')->get()
         ]);
     }
 
