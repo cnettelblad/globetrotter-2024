@@ -75,18 +75,15 @@ const search = ref("");
                 </header>
 
                 <main class="mt-6">
-                    <div class="grid gap-6 grid-cols-2 lg:grid-cols-4">
-                        <div
+                    <div class="grid gap-6 grid-cols-2 lg:grid-cols-4 auto-rows-auto grid-flow-dense">
+                        <SubmissionCard
                             v-for="contestant in filteredContestants()"
                             :key="contestant.id"
-                        >
-                            <SubmissionCard
-                                :nickname="contestant.nickname"
-                                :username="contestant.username"
-                                :avatar="contestant.avatar"
-                                :submissions="contestant.submissions"
-                            />
-                        </div>
+                            :nickname="contestant.nickname"
+                            :username="contestant.username"
+                            :avatar="contestant.avatar"
+                            :submissions="contestant.submissions"
+                        />
                     </div>
                 </main>
 
