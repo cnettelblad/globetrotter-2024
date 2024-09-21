@@ -20,8 +20,9 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $this->call([
+            DestinationSeeder::class,
             ContestantSeeder::class,
-            SubmissionSeeder::class
+            SubmissionSeeder::class,
         ]);
     }
 }

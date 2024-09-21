@@ -31,7 +31,6 @@ return new class extends Migration
                     'December'
                 ]
             );
-            $table->string('submission');
             $table->string('image')->nullable();
             $table->timestamps();
         });

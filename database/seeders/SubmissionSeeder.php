@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Contestant;
+use App\Models\Destination;
 use App\Models\Submission;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Collection;
@@ -32,9 +33,11 @@ class SubmissionSeeder extends Seeder
 
         $contestants->each(function ($contestant) use ($months) {
             $submissions = $months->random(rand(1, 12))->map(
-                fn($month) => Submission::factory()->make([
-                    'month' => $month
-                ])
+                fn($month) => Submission::factory()
+                    ->for(Destination::inRandomOrder()->first())
+                    ->make([
+                        'month' => $month
+                    ])
             );
             $contestant->submissions()->saveMany($submissions);
         });

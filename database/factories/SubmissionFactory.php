@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Destination;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -20,8 +21,7 @@ class SubmissionFactory extends Factory
     public function definition(): array
     {
         return [
-            'month' => $this->faker->monthName(),
-            'submission' => $this->faker->country(),
+            'month' => $this->faker->monthName()
         ];
     }
 }
