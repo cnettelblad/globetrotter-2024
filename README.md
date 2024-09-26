@@ -68,8 +68,26 @@ A web app that helps keeping track of- and registering submissions for Globetrot
 
 ## Development
 
+### Vue
+
 HMR is available through [Vite](https://laravel.com/docs/11.x/vite)
 
 ```sh
 sail npm run dev
+```
+
+### Queues
+
+[Laravel Horizon](https://laravel.com/docs/11.x/horizon) is installed but requires **Redis** as queue connection.
+
+Update your environment variables
+
+```env
+QUEUE_CONNECTION=redis
+```
+
+Start Horizon runner(s)
+
+```sh
+sail artisan horizon
 ```

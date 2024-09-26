@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ContestantController;
+use App\Http\Controllers\ImportController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SubmissionController;
 use App\Models\Contestant;
@@ -27,7 +28,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::get('/submissions', [SubmissionController::class, 'all'])->name('submissions.index');
-    Route::resource('contestants', ContestantController::class)->only(['index', 'show']);
+    Route::resource('contestants', ContestantController::class);
     Route::resource('contestants.submissions', SubmissionController::class)->shallow();
 
     Route::get('/import', function () {
@@ -36,7 +37,7 @@ Route::middleware('auth')->group(function () {
         ]);
     })->name('import.index');
 
-    Route::post('contestants/import', [ContestantController::class, 'import'])->name('contestants.import');
+    Route::post('contestants/import', [ImportController::class, 'csv'])->name('contestants.import');
 });
 
 require __DIR__ . '/auth.php';

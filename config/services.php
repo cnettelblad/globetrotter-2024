@@ -35,4 +35,7 @@ return [
         ],
     ],
 
+    'discord' => [
+        'token' => env('DISCORD_TOKEN'),
+    ]
 ];

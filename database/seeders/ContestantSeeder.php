@@ -4,12 +4,15 @@ namespace Database\Seeders;
 
 use App\Models\Contestant;
 use App\Models\Submission;
+use App\Services\DiscordService;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Collection;
 use function Laravel\Prompts\progress;
 
 class ContestantSeeder extends Seeder
 {
+    public function __construct(public DiscordService $discordService) {}
+
     /**
      * Run the database seeds.
      */
@@ -51,7 +54,14 @@ class ContestantSeeder extends Seeder
             $discordUsers,
             function ($discordId, $progress) {
                 $progress->label("Importing: $discordId");
-                Contestant::fromDiscordId($discordId);
+                // Contestant::fromDiscordId($discordId);
+                $discordUser = $this->discordService->getUser($discordId);
+
+                if (!$discordUser) {
+                    return;
+                }
+
+                Contestant::fromDiscordUser($discordUser);
             },
             'This takes a little while...'
         );

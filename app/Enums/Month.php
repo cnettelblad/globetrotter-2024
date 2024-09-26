@@ -2,8 +2,12 @@
 
 namespace App\Enums;
 
+use App\Enums\Traits\Arrayable;
+
 enum Month: string
 {
+    use Arrayable;
+
     case JANUARY = 'January';
     case FEBRUARY = 'February';
     case MARCH = 'March';

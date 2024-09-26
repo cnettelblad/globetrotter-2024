@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Data\Discord\DiscordUser;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -76,57 +77,25 @@ class Contestant extends Model
     }
 
     /**
-     * Update the contestant's information from Discord.
+     * Create or update a contestant from a Discord user.
+     *
+     * @param DiscordUser $user
+     * @return self
      */
-    public function syncDiscord(): self
+    public static function fromDiscordUser(DiscordUser $user): self
     {
-        $response = self::fetchDiscordUser($this->discord_id)->json();
-
-        $this->update([
-            'username' => $response['username'],
-            'nickname' => $response['global_name'] ?? null,
-            'avatar' => $response['avatar'] ?? null
-        ]);
-
-        return $this;
-    }
-
-    /**
-     * Create a new contestant from a Discord ID.
-     */
-    public static function fromDiscordId(int $id): self
-    {
-        $response = self::fetchDiscordUser($id)->json();
-
         return self::updateOrCreate(
             [
-                'discord_id' => $id
+                'discord_id' => $user->id
             ],
             [
-                'username' => $response['username'],
-                'nickname' => $response['global_name'] ?? null,
-                'avatar' => $response['avatar']
-                    ? self::downloadDiscordAvatar($id, $response['avatar'])
+                'username' => $user->username,
+                'nickname' => $user->global_name,
+                'avatar' => $user->avatar
+                    ? self::downloadDiscordAvatar($user->id, $user->avatar)
                     : null
             ]
         );
-    }
-
-    /**
-     * Fetch a Discord user by ID.
-     */
-    private static function fetchDiscordUser(int|string $id): Response
-    {
-        $url = "https://discord.com/api/v10/users/{$id}";
-
-        return Http::withHeaders([
-            'Authorization' => 'Bot ' . env('DISCORD_TOKEN'),
-            'Content-Type' => 'application/json'
-        ])->retry(
-            3,
-            1000,
-            fn(RequestException $e) => $e->response->status() === 429
-        )->get($url);
     }
 
     private static function downloadDiscordAvatar(
