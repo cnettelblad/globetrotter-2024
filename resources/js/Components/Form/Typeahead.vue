@@ -2,6 +2,7 @@
 import { Contestant } from '@/types';
 import { onMounted, ref } from 'vue';
 import ContestantCard from '../Cards/ContestantCard.vue';
+import { levenshtein } from '@/Utils/Levenshtein';
 
 const model = defineModel<string>({ required: true });
 const selectedContestant = ref<Contestant | null>(null);
@@ -31,13 +32,69 @@ const filteredContestants = (): Contestant[] => {
         return [];
     }
 
-    return props.contestants?.filter((contestant) => {
-        return (
-            contestant.nickname?.toLowerCase().includes(search.value.toLowerCase()) ||
-            contestant.username?.toLowerCase().includes(search.value.toLowerCase()) ||
-            contestant.discord_id?.toString().toLowerCase().includes(search.value.toLowerCase())
-        );
-    });
+    return props.contestants?.map((contestant) => {
+        const searchValue = search.value.toLowerCase();
+
+        const nickname = contestant.nickname?.toLowerCase();
+        const username = contestant.username.toLowerCase();
+        const discordId = contestant.discord_id.toString();
+
+        const nicknameMatch = nickname?.includes(searchValue);
+        const usernameMatch = username.includes(searchValue);
+        const discordIdMatch = discordId.includes(searchValue);
+
+        if (!nicknameMatch && !usernameMatch && !discordIdMatch) {
+            return;
+        }
+
+        const nicknameDistance = nickname && nicknameMatch
+            ? levenshtein(nickname, searchValue)
+            : null;
+        const usernameDistance = username && usernameMatch
+            ? levenshtein(username, searchValue)
+            : null;
+        const discordIdDistance = discordId && discordIdMatch
+            ? levenshtein(discordId, searchValue)
+            : null;
+
+        return {
+            matches: {
+                nickname: nicknameDistance,
+                username: usernameDistance,
+                discord_id: discordIdDistance,
+            },
+            contestant,
+        }
+    }).filter(Boolean).sort((a, b) => {
+        if (!a || !b) {
+            return 0;
+        }
+
+        let aValue = 0;
+        let bValue = 0;
+
+        if (a.matches.nickname) {
+            aValue = a.matches.nickname;
+        } else if (a.matches.username) {
+            aValue = a.matches.username + 2;
+        } else if (a.matches.discord_id) {
+            aValue = a.matches.discord_id + 5;
+        }
+
+        if (b.matches.nickname) {
+            bValue = b.matches.nickname;
+        } else if (b.matches.username) {
+            bValue = b.matches.username + 2;
+        } else if (b.matches.discord_id) {
+            bValue = b.matches.discord_id + 5;
+        }
+
+        if (aValue === bValue) {
+            return 0;
+        }
+
+        return (aValue > bValue) ? 1 : -1;
+    }).map((result) => result?.contestant).slice(0, 5) as Contestant[];
 };
 
 const handleSelection = (contestant: Contestant) => {
