@@ -69,14 +69,19 @@ const open = ref(false);
                             >
                                 <li
                                     v-for="submission in submissions"
-                                    class="flex items-center justify-between py-3 pl-3 pr-4 text-sm"
+                                    class="flex items-center justify-between py-4 pl-3 pr-4 text-sm relative"
                                 >
 
-                                    <div class="flex w-0 flex-1 items-center">
-                                        <span :class="{'line-through': !submission.destination}" class="ml-2 truncate">{{ submission.month }}</span>
-                                    </div>
-                                    <div v-if="submission.destination" class="ml-4 flex-shrink-0">
-                                        <p class="font-medium text-gray-900">{{ submission.destination.name }} <Emoji>{{submission.destination.emoji}}</Emoji> </p>
+                                    <span class="absolute text-sm text-gray-500 transform -translate-y-5 scale-75 top-2 z-10 origin-[0] bg-gray-50 px-2 peer-placeholder-shown:scale-100 start-1">{{ submission.month }}</span>
+                                    <div class="ml-4 flex-shrink-0">
+                                        <p v-if="submission.destination" class="font-medium text-gray-900">
+                                            <Emoji>{{submission.destination.emoji}}</Emoji>
+                                            {{ submission.destination.name }}
+                                        </p>
+                                        <p v-else class="font-medium text-gray-400">
+                                            <Emoji>🏳️</Emoji>
+                                            -
+                                        </p>
                                     </div>
                                 </li>
                             </ul>
