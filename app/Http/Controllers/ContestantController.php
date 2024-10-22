@@ -49,7 +49,9 @@ class ContestantController extends Controller
      */
     public function edit(Contestant $contestant)
     {
-        //
+        return Inertia::render('Contestants/Edit', [
+            'contestant' => $contestant->load('submissions')
+        ]);
     }
 
     /**
