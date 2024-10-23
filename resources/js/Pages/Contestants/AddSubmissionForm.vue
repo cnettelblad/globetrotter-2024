@@ -3,7 +3,7 @@ import InputError from '@/Components/Form/InputError.vue';
 import InputLabel from '@/Components/Form/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/Form/TextInput.vue';
-import Typeahead from '@/Components/Form/Typeahead.vue';
+import Typeahead from '@/Components/Form/ContestantTypeahead.vue';
 import { Contestant } from '@/types';
 import { useForm } from '@inertiajs/vue3';
 import axios from 'axios';
@@ -76,11 +76,8 @@ onMounted(() => {
                 <InputLabel for="contestant" value="Contestant" />
 
                 <Typeahead
-                    id="contestant"
                     v-model="form.contestant"
                     :contestants="contestants"
-                    placeholder="Search for a contestant"
-                    class="mt-1 block w-full"
                 />
 
                 <InputError :message="form.errors.contestant" class="mt-2" />
@@ -112,10 +109,8 @@ onMounted(() => {
             <div>
                 <InputLabel for="image" value="Image" />
                     <FileInput
-                        id="image"
                         v-model="form.image"
                         accept=".jpg,.jpeg,.png"
-                        class="mt-1 block w-full"
                     />
                 <InputError :message="form.errors.image" class="mt-2" />
             </div>
