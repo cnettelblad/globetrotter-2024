@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ImportContestantsRequest;
 use App\Jobs\ImportContestantsFromCsv;
 use App\Models\Contestant;
+use App\Services\DiscordService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Inertia\Inertia;
 
 class ContestantController extends Controller
@@ -25,7 +27,7 @@ class ContestantController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('Contestants/Create');
     }
 
     /**
@@ -33,7 +35,23 @@ class ContestantController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        /**
+         * @var DiscordService $discordService
+         */
+        $discordService = App::make(DiscordService::class);
+        $discordUser = $discordService->getUser($request->input('discord_id'));
+
+        if (!$discordUser) {
+            return redirect()->route('contestants.create')->withErrors([
+                'discord_id' => 'Discord user not found.'
+            ]);
+        }
+
+        $contestant = Contestant::fromDiscordUser($discordUser);
+
+        return redirect()
+            ->route('contestants.create')
+            ->with('contestant', $contestant);
     }
 
     /**

@@ -27,13 +27,18 @@ class DiscordService
                 5,
                 fn() => Cache::get(self::RATE_LIMIT_CACHE_KEY),
                 [$this, 'retryHandler']
-            )->throw();
+            );
     }
 
     public function getUser(string $userId): ?DiscordUser
     {
-        Log::info("Fetching user {$userId}");
-        $response = $this->http->get("users/{$userId}");
+        try {
+            $response = $this->http->get("users/{$userId}");
+        } catch (RequestException $e) {
+            Log::error($e->getMessage());
+
+            return null;
+        }
 
         if (!$response->successful()) {
             return null;

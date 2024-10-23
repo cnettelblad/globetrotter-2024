@@ -54,7 +54,6 @@ class ContestantSeeder extends Seeder
             $discordUsers,
             function ($discordId, $progress) {
                 $progress->label("Importing: $discordId");
-                // Contestant::fromDiscordId($discordId);
                 $discordUser = $this->discordService->getUser($discordId);
 
                 if (!$discordUser) {
