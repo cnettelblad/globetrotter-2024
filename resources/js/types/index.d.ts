@@ -7,10 +7,10 @@ export interface User {
 
 export interface Contestant {
     id: string;
-    discord_id: number;
+    discord_id: string;
     created_at: string;
     updated_at: string;
-    nickname: string;
+    nickname: string | undefined;
     username: string;
     avatar: string;
     score: number;

@@ -55,6 +55,18 @@ class Contestant extends Model
     }
 
     /**
+     * Convert the discord_id attribute to a string.
+     */
+    protected function discordId(): Attribute
+    {
+        return Attribute::make(
+            get: function (int $discordId) {
+                return (string) $discordId;
+            }
+        );
+    }
+
+    /**
      * Get the contestant score based on the number of submissions.
      */
     public function score(): Attribute
