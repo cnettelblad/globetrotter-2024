@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import { Contestant } from '@/types';
-import { onMounted, ref, toRef } from 'vue';
-import ContestantCard from '../Cards/ContestantCard.vue';
-import { useContestantFilter } from '@/use/useContestantFilter';
+import { Contestant } from "@/types";
+import { onMounted, ref, toRef } from "vue";
+import ContestantCard from "../Cards/ContestantCard.vue";
+import { useContestantFilter } from "@/use/useContestantFilter";
 
-const model = defineModel<string>('form', { required: true });
+const model = defineModel<string>();
 const selectedContestant = ref<Contestant | null>(null);
 const input = ref<HTMLInputElement | null>(null);
-const search = ref<string>('');
+const search = ref<string>("");
 
 onMounted(() => {
-    if (input.value?.hasAttribute('autofocus')) {
+    if (input.value?.hasAttribute("autofocus")) {
         input.value?.focus();
     }
 });
@@ -26,19 +26,17 @@ const handleInput = (event: Event) => {
 const handleSelection = (contestant: Contestant) => {
     model.value = contestant.id;
     selectedContestant.value = contestant;
-    filter.value = '';
+    filter.value = "";
 };
 
 const clearSelection = () => {
-    model.value = '';
+    model.value = "";
     selectedContestant.value = null;
-    filter.value = '';
+    filter.value = "";
 };
 
-const {
-    filter,
-    filteredContestants: filteredContestantsTwo
-} = useContestantFilter('', toRef(props, 'contestants'));
+const { filter, filteredContestants: filteredContestantsTwo } =
+    useContestantFilter("", toRef(props, "contestants"));
 
 defineExpose({ focus: () => input.value?.focus() });
 </script>
@@ -63,7 +61,10 @@ defineExpose({ focus: () => input.value?.focus() });
             :class="$attrs.class"
             :placeholder="$attrs.placeholder as string || 'Begin typing to search...'"
         />
-        <ul v-if="filteredContestantsTwo && filter" class="absolute overflow-hidden">
+        <ul
+            v-if="filteredContestantsTwo && filter"
+            class="absolute overflow-hidden"
+        >
             <li
                 v-for="contestant in filteredContestantsTwo"
                 :key="contestant.id"
@@ -80,11 +81,16 @@ defineExpose({ focus: () => input.value?.focus() });
                         <span class="text-gray-900">
                             {{ contestant.nickname ?? contestant.username }}
                         </span>
-                        <span v-if="contestant.nickname" class="text-gray-500 text-xs">
+                        <span
+                            v-if="contestant.nickname"
+                            class="text-gray-500 text-xs"
+                        >
                             ({{ contestant.username }})
                         </span>
                     </div>
-                    <span class="text-gray-500">{{ contestant.discord_id }}</span>
+                    <span class="text-gray-500">{{
+                        contestant.discord_id
+                    }}</span>
                 </div>
             </li>
         </ul>

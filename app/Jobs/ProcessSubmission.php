@@ -23,9 +23,8 @@ class ProcessSubmission implements ShouldQueue
 
     public function handle()
     {
-        $destinations = Destination::whereLike(
-            'name',
-            "%" . $this->destination . "%"
+        $destinations = Destination::whereNameLike(
+            $this->destination
         )->get();
 
         if ($destinations->isEmpty()) {

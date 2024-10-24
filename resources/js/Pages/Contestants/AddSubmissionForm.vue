@@ -1,64 +1,62 @@
 <script setup lang="ts">
-import InputError from '@/Components/Form/InputError.vue';
-import InputLabel from '@/Components/Form/InputLabel.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
-import TextInput from '@/Components/Form/TextInput.vue';
-import Typeahead from '@/Components/Form/ContestantTypeahead.vue';
-import { Contestant } from '@/types';
-import { useForm } from '@inertiajs/vue3';
-import axios from 'axios';
-import { onMounted, ref } from 'vue';
-import Dropdown from '@/Components/Form/Dropdown.vue';
-import FileInput from '@/Components/Form/FileInput.vue';
+import InputError from "@/Components/Form/InputError.vue";
+import InputLabel from "@/Components/Form/InputLabel.vue";
+import PrimaryButton from "@/Components/PrimaryButton.vue";
+import TextInput from "@/Components/Form/TextInput.vue";
+import { Contestant } from "@/types";
+import { useForm } from "@inertiajs/vue3";
+import axios from "axios";
+import { onMounted, ref } from "vue";
+import Dropdown from "@/Components/Form/Dropdown.vue";
+import FileInput from "@/Components/Form/FileInput.vue";
+import ContestantTypeahead from "@/Components/Form/ContestantTypeahead.vue";
 
 const form = useForm({
-    contestant: '',
-    month: '',
-    submission: '',
+    contestant: "",
+    month: "",
+    destination: "",
     image: null,
 });
 
 const contestants = ref<Contestant[]>([]);
 
 const months = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December'
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
 ];
 
 const getContestants = () => {
-    axios.get(route('api.v1.contestants.index')).then((response) => {
+    axios.get(route("api.v1.contestants.index")).then((response) => {
         contestants.value = response.data;
     });
 };
 
 const addSubmission = () => {
-    form.post(route(
-        'contestants.submissions.store',
-        {contestant: form.contestant}
-    ), {
-        preserveScroll: true,
-        onSuccess: () => {
-            form.reset();
-        },
-        onError: () => {
-        },
-    });
+    form.post(
+        route("contestants.submissions.store", { contestant: form.contestant }),
+        {
+            preserveScroll: true,
+            onSuccess: () => {
+                form.reset();
+            },
+            onError: () => {},
+        }
+    );
 };
 
 onMounted(() => {
     getContestants();
 });
-
 </script>
 
 <template>
@@ -75,7 +73,7 @@ onMounted(() => {
             <div>
                 <InputLabel for="contestant" value="Contestant" />
 
-                <Typeahead
+                <ContestantTypeahead
                     v-model="form.contestant"
                     :contestants="contestants"
                 />
@@ -85,33 +83,33 @@ onMounted(() => {
 
             <div class="grid md:grid-cols-2 md:gap-6">
                 <div>
-                    <InputLabel for="submission" value="Submission" />
-                        <TextInput
-                            id="submission"
-                            v-model="form.submission"
-                            ref="submission"
-                            class="mt-1 block w-full"
-                        />
-                    <InputError :message="form.errors.submission" class="mt-2" />
+                    <InputLabel for="destination" value="Destination" />
+                    <TextInput
+                        id="destination"
+                        v-model="form.destination"
+                        ref="destination"
+                        class="mt-1 block w-full"
+                    />
+                    <InputError
+                        :message="form.errors.destination"
+                        class="mt-2"
+                    />
                 </div>
                 <div>
                     <InputLabel for="month" value="Month" />
-                        <Dropdown
-                            id="month"
-                            v-model="form.month"
-                            :options="months"
-                            class="mt-1 block w-full"
-                        />
+                    <Dropdown
+                        id="month"
+                        v-model="form.month"
+                        :options="months"
+                        class="mt-1 block w-full"
+                    />
                     <InputError :message="form.errors.month" class="mt-2" />
                 </div>
             </div>
 
             <div>
                 <InputLabel for="image" value="Image" />
-                    <FileInput
-                        v-model="form.image"
-                        accept=".jpg,.jpeg,.png"
-                    />
+                <FileInput v-model="form.image" accept=".jpg,.jpeg,.png" />
                 <InputError :message="form.errors.image" class="mt-2" />
             </div>
 
@@ -124,7 +122,12 @@ onMounted(() => {
                     leave-active-class="transition ease-in-out"
                     leave-to-class="opacity-0"
                 >
-                    <p v-if="form.recentlySuccessful" class="text-sm text-gray-600">Saved.</p>
+                    <p
+                        v-if="form.recentlySuccessful"
+                        class="text-sm text-gray-600"
+                    >
+                        Saved.
+                    </p>
                 </Transition>
             </div>
         </form>

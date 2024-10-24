@@ -35,4 +35,17 @@ class Destination extends Model
     {
         $query->where('code', $code);
     }
+
+    protected function scopeType(Builder $query, DestinationType $type): void
+    {
+        $query->where('type', $type);
+    }
+
+    protected function scopeWhereNameLike(Builder $query, string $name): void
+    {
+        $query->whereLike(
+            'name',
+            "%" . $name . "%"
+        );
+    }
 }

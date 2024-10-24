@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateSubmissionRequest;
 use App\Http\Requests\UpdateSubmissionRequest;
 use App\Models\Contestant;
+use App\Models\Destination;
 use App\Models\Submission;
 use Inertia\Inertia;
 
@@ -46,9 +47,17 @@ class SubmissionController extends Controller
      */
     public function store(CreateSubmissionRequest $request, Contestant $contestant)
     {
-        $contestant->submissions()->create($request->validated());
+        $destination = Destination::where(
+            'name',
+            $request->input('destination')
+        )->firstOrFail();
 
-        return redirect()->route('dashboard');
+        $submission = new Submission($request->validated());
+        $submission->destination()->associate($destination);
+        $submission->contestant()->associate($contestant);
+        $submission->save();
+
+        return redirect()->back();
     }
 
     /**

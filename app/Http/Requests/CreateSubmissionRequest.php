@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use App\Enums\Month;
+use App\Models\Destination;
+use Doctrine\Inflector\RulesetInflector;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -20,7 +22,14 @@ class CreateSubmissionRequest extends FormRequest
                 'required',
                 Rule::enum(Month::class)
             ],
-            'submission' => ['required', 'string'],
+            'destination' => [
+                'required',
+                function (string $attribute, string $value, \Closure $fail) {
+                    if (!Destination::whereNameLike($value)->exists()) {
+                        $fail("The selected $attribute could not be found.");
+                    }
+                }
+            ],
             'image' => ['sometimes', 'nullable', 'image']
         ];
     }

@@ -71,6 +71,7 @@ const validateDiscordId = () => {
                                     pattern="[0-9]*"
                                     @input="validateDiscordId"
                                     placeholder="123456789012345678"
+                                    autocomplete="off"
                                 />
                                 <InputError
                                     :message="form.errors.discord_id"

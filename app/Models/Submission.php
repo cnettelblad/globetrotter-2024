@@ -14,9 +14,7 @@ class Submission extends Model
     use HasUuids;
 
     protected $fillable = [
-        'discord_id',
         'month',
-        'submission',
         'image'
     ];
 

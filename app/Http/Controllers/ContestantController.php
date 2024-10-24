@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ImportContestantsRequest;
+use App\Http\Requests\UpdateContestantRequest;
 use App\Jobs\ImportContestantsFromCsv;
 use App\Models\Contestant;
 use App\Services\DiscordService;
@@ -49,9 +50,7 @@ class ContestantController extends Controller
 
         $contestant = Contestant::fromDiscordUser($discordUser);
 
-        return redirect()
-            ->route('contestants.create')
-            ->with('contestant', $contestant);
+        return redirect()->route('contestants.edit', $contestant);
     }
 
     /**
@@ -75,9 +74,11 @@ class ContestantController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Contestant $contestant)
+    public function update(UpdateContestantRequest $request, Contestant $contestant)
     {
-        //
+        $contestant->update($request->validated());
+
+        return redirect()->route('contestants.edit', $contestant);
     }
 
     /**
