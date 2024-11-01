@@ -51,7 +51,7 @@ defineExpose({ focus: () => input.value?.focus() });
             Clear selection
         </button>
     </div>
-    <div v-if="!selectedContestant">
+    <div v-if="!selectedContestant" class="relative">
         <input
             type="text"
             ref="input"
@@ -63,7 +63,7 @@ defineExpose({ focus: () => input.value?.focus() });
         />
         <ul
             v-if="filteredContestantsTwo && filter"
-            class="absolute overflow-hidden"
+            class="absolute left-0 right-0 mt-1 overflow-hidden shadow-lg border rounded-lg z-10"
         >
             <li
                 v-for="contestant in filteredContestantsTwo"

@@ -12,6 +12,7 @@ import FileInput from "@/Components/Form/FileInput.vue";
 import ContestantTypeahead from "@/Components/Form/ContestantTypeahead.vue";
 import { TrashIcon } from "@heroicons/vue/24/outline";
 import ImageUpload from "@/Components/Form/ImageUpload.vue";
+import CountryTypeahead from "@/Components/Form/CountryTypeahead.vue";
 
 const form = useForm({
     contestant: "",
@@ -94,12 +95,16 @@ onMounted(() => {
                         value="Destination"
                         required
                     />
-                    <TextInput
+                    <CountryTypeahead
+                        v-model="form.destination"
+                        class="w-full"
+                    />
+                    <!-- <TextInput
                         id="destination"
                         v-model="form.destination"
                         ref="destination"
                         class="mt-1 block w-full"
-                    />
+                    /> -->
                     <InputError
                         :message="form.errors.destination"
                         class="mt-2"

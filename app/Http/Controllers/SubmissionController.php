@@ -47,10 +47,7 @@ class SubmissionController extends Controller
      */
     public function store(CreateSubmissionRequest $request, Contestant $contestant)
     {
-        $destination = Destination::where(
-            'name',
-            $request->input('destination')
-        )->firstOrFail();
+        $destination = Destination::findOrfail($request->input('destination'));
 
         $submission = new Submission($request->validated());
         $submission->destination()->associate($destination);

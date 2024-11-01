@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import AddSubmissionForm from '@/Pages/Contestants/AddSubmissionForm.vue';
-import { Head } from '@inertiajs/vue3';
-import ImportForm from './Import/Partials/ImportForm.vue';
+import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
+import AddSubmissionForm from "@/Pages/Contestants/AddSubmissionForm.vue";
+import { Head } from "@inertiajs/vue3";
+import ImportForm from "./Import/Partials/ImportForm.vue";
 </script>
 
 <template>
@@ -10,7 +10,9 @@ import ImportForm from './Import/Partials/ImportForm.vue';
 
     <AuthenticatedLayout>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Dashboard</h2>
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                Dashboard
+            </h2>
         </template>
 
         <div class="py-12">

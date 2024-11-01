@@ -25,11 +25,7 @@ class UpdateSubmissionRequest extends FormRequest
             ],
             'destination' => [
                 'required',
-                function (string $attribute, string $value, \Closure $fail) {
-                    if (!Destination::whereNameLike($value)->exists()) {
-                        $fail("The selected $attribute could not be found.");
-                    }
-                }
+                Rule::exists(Destination::class, 'id')
             ],
             'image' => ['sometimes', 'nullable', 'image']
         ];
@@ -38,7 +34,7 @@ class UpdateSubmissionRequest extends FormRequest
     public function messages()
     {
         return [
-            'month.unique' => 'This contestant has already submitted for :month.',
+            'month.unique' => 'The contestant already has a submission this month.',
         ];
     }
 }

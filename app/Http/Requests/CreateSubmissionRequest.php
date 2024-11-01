@@ -28,11 +28,7 @@ class CreateSubmissionRequest extends FormRequest
             ],
             'destination' => [
                 'required',
-                function (string $attribute, string $value, \Closure $fail) {
-                    if (!Destination::whereNameLike($value)->exists()) {
-                        $fail("The selected $attribute could not be found.");
-                    }
-                }
+                Rule::exists(Destination::class, 'id')
             ],
             'image' => ['sometimes', 'nullable', 'image']
         ];
