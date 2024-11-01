@@ -24,6 +24,7 @@ const handleFileSelection = async (e: Event) => {
             class="grid place-items-center relative w-full h-64 border-2 border-gray-300 border-dashed rounded-lg"
         >
             <input
+                v-if="!model"
                 id="dropzone-file"
                 type="file"
                 class="overlay cursor-pointer focus:outline-none"
