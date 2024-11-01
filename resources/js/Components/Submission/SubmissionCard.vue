@@ -26,12 +26,12 @@ const months = [
     "December",
 ];
 
-const submissions = computed(() => {
+const monthlySubmissions = computed(() => {
     return months.map((month) => {
         const entry = props.submissions?.find(
             (submission) => submission.month === month
         );
-        return { month, destination: entry?.destination };
+        return { month, submission: entry?.destination };
     });
 });
 
@@ -59,13 +59,13 @@ const open = ref(false);
                 />
                 <div class="px-4 py-5 sm:px-6 overflow-hidden">
                     <h3
-                        class="text-lg font-medium leading-6 whitespace-nowrap text-gray-900"
+                        class="text-lg font-medium leading-6 truncate text-gray-900"
                     >
                         {{ props.nickname ?? props.username }}
                     </h3>
                     <p
                         v-if="props.nickname"
-                        class="mt-1 max-w-2xl text-sm text-gray-500"
+                        class="mt-1 max-w-2xl text-sm text-gray-500 truncate"
                     >
                         {{ props.username }}
                     </p>
@@ -88,10 +88,10 @@ const open = ref(false);
                                 class="divide-y divide-gray-200 rounded-md border border-gray-200 mx-4"
                             >
                                 <SubmissionItem
-                                    v-for="submission in submissions"
-                                    :month="submission.month"
-                                    :destination="submission.destination"
-                                    :key="submission.month"
+                                    v-for="monthSubmission in monthlySubmissions"
+                                    :month="monthSubmission.month"
+                                    :destination="monthSubmission?.submission"
+                                    :key="monthSubmission.month"
                                 />
                             </ul>
                         </dd>

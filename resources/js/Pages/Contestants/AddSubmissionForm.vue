@@ -10,6 +10,8 @@ import { onMounted, ref } from "vue";
 import Dropdown from "@/Components/Form/Dropdown.vue";
 import FileInput from "@/Components/Form/FileInput.vue";
 import ContestantTypeahead from "@/Components/Form/ContestantTypeahead.vue";
+import { TrashIcon } from "@heroicons/vue/24/outline";
+import ImageUpload from "@/Components/Form/ImageUpload.vue";
 
 const form = useForm({
     contestant: "",
@@ -19,7 +21,7 @@ const form = useForm({
 });
 
 const contestants = ref<Contestant[]>([]);
-
+const URL = window.URL || window.webkitURL;
 const months = [
     "January",
     "February",
@@ -47,7 +49,7 @@ const addSubmission = () => {
         {
             preserveScroll: true,
             onSuccess: () => {
-                form.reset();
+                form.reset("month", "destination", "image");
             },
             onError: () => {},
         }
@@ -71,7 +73,7 @@ onMounted(() => {
 
         <form @submit.prevent="addSubmission" class="mt-6 space-y-6">
             <div>
-                <InputLabel for="contestant" value="Contestant" />
+                <InputLabel for="contestant" value="Select a Contestant" />
 
                 <ContestantTypeahead
                     v-model="form.contestant"
@@ -109,7 +111,7 @@ onMounted(() => {
 
             <div>
                 <InputLabel for="image" value="Image" />
-                <FileInput v-model="form.image" accept=".jpg,.jpeg,.png" />
+                <ImageUpload v-model="form.image" class="mt-1" />
                 <InputError :message="form.errors.image" class="mt-2" />
             </div>
 
