@@ -73,7 +73,11 @@ onMounted(() => {
 
         <form @submit.prevent="addSubmission" class="mt-6 space-y-6">
             <div>
-                <InputLabel for="contestant" value="Select a Contestant" />
+                <InputLabel
+                    for="contestant"
+                    value="Select a Contestant"
+                    required
+                />
 
                 <ContestantTypeahead
                     v-model="form.contestant"
@@ -85,7 +89,11 @@ onMounted(() => {
 
             <div class="grid md:grid-cols-2 md:gap-6">
                 <div>
-                    <InputLabel for="destination" value="Destination" />
+                    <InputLabel
+                        for="destination"
+                        value="Destination"
+                        required
+                    />
                     <TextInput
                         id="destination"
                         v-model="form.destination"
@@ -98,7 +106,7 @@ onMounted(() => {
                     />
                 </div>
                 <div>
-                    <InputLabel for="month" value="Month" />
+                    <InputLabel for="month" value="Month" required />
                     <Dropdown
                         id="month"
                         v-model="form.month"
