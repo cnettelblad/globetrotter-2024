@@ -2,17 +2,43 @@
 
 namespace App\Http\Requests;
 
-class UpdateSubmissionRequest extends CreateSubmissionRequest
+use App\Enums\Month;
+use App\Models\Destination;
+use App\Models\Submission;
+use Illuminate\Container\Attributes\RouteParameter;
+use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+
+class UpdateSubmissionRequest extends FormRequest
 {
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
-    public function rules(): array
+    public function rules(
+        #[RouteParameter('submission')] Submission $submission
+    ): array {
+        return [
+            'month' => [
+                'required',
+                Rule::enum(Month::class),
+                Rule::unique(Submission::class)->where(
+                    'contestant_id',
+                    $submission->contestant_id
+                )
+            ],
+            'destination' => [
+                'required',
+                function (string $attribute, string $value, \Closure $fail) {
+                    if (!Destination::whereNameLike($value)->exists()) {
+                        $fail("The selected $attribute could not be found.");
+                    }
+                }
+            ],
+            'image' => ['sometimes', 'nullable', 'image']
+        ];
+    }
+
+    public function messages()
     {
         return [
-            ...parent::rules(),
+            'month.unique' => 'This contestant has already submitted for :month.',
         ];
     }
 }
