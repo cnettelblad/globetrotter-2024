@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Http\UploadedFile;
 
 class Submission extends Model
 {
@@ -15,7 +16,6 @@ class Submission extends Model
 
     protected $fillable = [
         'month',
-        'image'
     ];
 
     protected $casts = [
@@ -34,5 +34,10 @@ class Submission extends Model
     public function destination(): BelongsTo
     {
         return $this->belongsTo(Destination::class);
+    }
+
+    public function storeImage(UploadedFile $image)
+    {
+        $this->image = $image->store('submissions');
     }
 }

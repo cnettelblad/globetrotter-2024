@@ -55,6 +55,11 @@ class SubmissionController extends Controller
         $submission = new Submission($request->validated());
         $submission->destination()->associate($destination);
         $submission->contestant()->associate($contestant);
+
+        if ($request->hasFile('image')) {
+            $submission->storeImage($request->file('image'));
+        }
+
         $submission->save();
 
         return redirect()->back();
