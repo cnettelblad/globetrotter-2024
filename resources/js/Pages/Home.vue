@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Head, Link } from "@inertiajs/vue3";
-import SubmissionCard from "@/Components/SubmissionCard.vue";
+import SubmissionCard from "@/Components/Submission/SubmissionCard.vue";
 import TextInput from "@/Components/Form/TextInput.vue";
 import { ref } from "vue";
 import { Contestant } from "@/types";
@@ -8,8 +8,6 @@ import { Contestant } from "@/types";
 const props = defineProps<{
     canLogin?: boolean;
     canRegister?: boolean;
-    laravelVersion: string;
-    phpVersion: string;
     contestants: Contestant[];
 }>();
 
@@ -75,7 +73,9 @@ const search = ref("");
                 </header>
 
                 <main class="mt-6">
-                    <div class="grid gap-6 grid-cols-2 lg:grid-cols-4 auto-rows-auto grid-flow-dense">
+                    <div
+                        class="grid gap-6 grid-cols-2 lg:grid-cols-4 auto-rows-auto grid-flow-dense"
+                    >
                         <SubmissionCard
                             v-for="contestant in filteredContestants()"
                             :key="contestant.id"
@@ -88,14 +88,20 @@ const search = ref("");
                 </main>
 
                 <footer class="py-16 text-center text-sm text-black">
-                    Built by <a href="https://github.com/cnettelblad" class="text-black font-bold">Carl</a> with
+                    Built by
+                    <a
+                        href="https://github.com/cnettelblad"
+                        class="text-black font-bold"
+                        >Carl</a
+                    >
+                    with
                     <a href="https://vuejs.org/" class="text-teal-600 font-bold"
                         >Vue</a
                     >,
                     <a
                         href="https://laravel.com/"
                         class="text-red-400 font-bold"
-                    >Laravel</a
+                        >Laravel</a
                     >
                     and
                     <a
