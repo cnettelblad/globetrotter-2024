@@ -10,7 +10,7 @@ const form = useForm({
 });
 
 const importContestants = () => {
-    form.post(route("contestants.import"), {
+    form.post(route("contestants.csv"), {
         preserveScroll: true,
         onSuccess: () => {
             form.reset();
