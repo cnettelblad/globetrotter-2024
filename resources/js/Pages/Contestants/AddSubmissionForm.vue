@@ -1,18 +1,15 @@
 <script setup lang="ts">
 import InputError from "@/Components/Form/InputError.vue";
 import InputLabel from "@/Components/Form/InputLabel.vue";
-import PrimaryButton from "@/Components/PrimaryButton.vue";
-import TextInput from "@/Components/Form/TextInput.vue";
 import { Contestant } from "@/types";
 import { useForm } from "@inertiajs/vue3";
 import axios from "axios";
 import { onMounted, ref } from "vue";
 import Dropdown from "@/Components/Form/Dropdown.vue";
-import FileInput from "@/Components/Form/FileInput.vue";
 import ContestantTypeahead from "@/Components/Form/ContestantTypeahead.vue";
-import { TrashIcon } from "@heroicons/vue/24/outline";
 import ImageUpload from "@/Components/Form/ImageUpload.vue";
 import CountryTypeahead from "@/Components/Form/CountryTypeahead.vue";
+import GradientButton from "@/Components/Buttons/GradientButton.vue";
 
 const form = useForm({
     contestant: "",
@@ -22,7 +19,6 @@ const form = useForm({
 });
 
 const contestants = ref<Contestant[]>([]);
-const URL = window.URL || window.webkitURL;
 const months = [
     "January",
     "February",
@@ -99,12 +95,6 @@ onMounted(() => {
                         v-model="form.destination"
                         class="w-full"
                     />
-                    <!-- <TextInput
-                        id="destination"
-                        v-model="form.destination"
-                        ref="destination"
-                        class="mt-1 block w-full"
-                    /> -->
                     <InputError
                         :message="form.errors.destination"
                         class="mt-2"
@@ -129,7 +119,9 @@ onMounted(() => {
             </div>
 
             <div class="flex items-center gap-4">
-                <PrimaryButton :disabled="form.processing">Save</PrimaryButton>
+                <GradientButton :disabled="form.processing"
+                    >Save</GradientButton
+                >
 
                 <Transition
                     enter-active-class="transition ease-in-out"

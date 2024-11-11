@@ -6,13 +6,16 @@
         "build": "vue-tsc && vite build"
     },
     "devDependencies": {
+        "@heroicons/vue": "^2.1.5",
         "@inertiajs/vue3": "^1.0.0",
         "@tailwindcss/forms": "^0.5.3",
+        "@types/d3": "^7.4.3",
         "@types/lodash": "^4.17.13",
         "@types/lodash.debounce": "^4.0.9",
         "@vitejs/plugin-vue": "^5.0.0",
         "autoprefixer": "^10.4.12",
         "axios": "^1.6.4",
+        "d3": "^7.9.0",
         "laravel-vite-plugin": "^1.0",
         "lodash": "^4.17.21",
         "postcss": "^8.4.31",
@@ -21,8 +24,5 @@
         "vite": "^5.0",
         "vue": "^3.4.0",
         "vue-tsc": "^2.0.24"
-    },
-    "dependencies": {
-        "@heroicons/vue": "^2.1.5"
     }
 }
