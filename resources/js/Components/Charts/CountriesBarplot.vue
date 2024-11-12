@@ -119,11 +119,3 @@ onMounted(async () => {
 <template>
     <div ref="chartContainer" class="grid place-items-center"></div>
 </template>
-
-<style scoped>
-.chart-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-</style>
