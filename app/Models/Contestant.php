@@ -69,7 +69,7 @@ class Contestant extends Model
     /**
      * Get the contestant score based on the number of submissions.
      */
-    public function score(): Attribute
+    protected function score(): Attribute
     {
         return Attribute::make(
             get: function () {
@@ -80,8 +80,6 @@ class Contestant extends Model
 
     /**
      * Get the submissions for the contestant.
-     *
-     * @return HasMany<Submission>
      */
     public function submissions(): HasMany
     {
@@ -90,9 +88,6 @@ class Contestant extends Model
 
     /**
      * Create or update a contestant from a Discord user.
-     *
-     * @param DiscordUser $user
-     * @return self
      */
     public static function fromDiscordUser(DiscordUser $user): self
     {

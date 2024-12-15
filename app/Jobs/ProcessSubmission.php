@@ -23,6 +23,9 @@ class ProcessSubmission implements ShouldQueue
 
     public function handle()
     {
+        /**
+         * @var Collection<Destination>
+         */
         $destinations = Destination::whereNameLike(
             $this->destination
         )->get();
@@ -42,8 +45,6 @@ class ProcessSubmission implements ShouldQueue
         /**
          * If there are multiple destinations with similar names,
          * select the one with the smallest Levenshtein distance.
-         *
-         * @var Destination $destination
          */
         if ($destinations->count() > 1) {
             $destination = $destinations->sortBy(

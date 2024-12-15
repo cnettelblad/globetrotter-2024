@@ -35,7 +35,7 @@ class ImportContestantsFromCsv implements ShouldQueue
             }
 
             ProcessDiscordContestant::dispatch(
-                $data->get('ID'),
+                (int) $data->get('ID'),
                 $data->only(Month::toArray())->filter()
             );
         }

@@ -22,9 +22,6 @@ class ImportController extends Controller
 
     /**
      * Import contestants from a CSV file.
-     *
-     * @param Request $request
-     * @return void
      */
     public function csv(ImportCsvRequest $request)
     {

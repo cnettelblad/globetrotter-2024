@@ -11,6 +11,10 @@ import ImageUpload from "@/Components/Form/ImageUpload.vue";
 import CountryTypeahead from "@/Components/Form/CountryTypeahead.vue";
 import GradientButton from "@/Components/Buttons/GradientButton.vue";
 
+const props = defineProps<{
+    contestant: Contestant;
+}>();
+
 const form = useForm({
     contestant: "",
     month: "",

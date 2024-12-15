@@ -14,7 +14,7 @@ const emit = defineEmits<{
 </script>
 
 <template>
-    <TableBodyCell class="flex justify-end">
+    <TableBodyCell class="flex justify-end items-center">
         <TableActions>
             <ul class="py-1 text-sm text-gray-700">
                 <li>

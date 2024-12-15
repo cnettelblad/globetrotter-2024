@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Macros\StrReverse;
 use App\Services\DiscordService;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Str;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -22,6 +24,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        $this->registerMacros();
+    }
+
+    public function registerMacros(): void
+    {
+        Str::macro('reverseTwo', new StrReverse);
     }
 }

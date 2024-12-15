@@ -2,11 +2,20 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Submission;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * @mixin Submission
+ */
 class SubmissionResource extends JsonResource
 {
+    public function __construct(Submission $resource)
+    {
+        parent::__construct($resource);
+    }
+
     /**
      * Transform the resource into an array.
      *
@@ -16,10 +25,8 @@ class SubmissionResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name,
-            'emoji' => $this->emoji,
-            'type' => $this->type,
-            'code' => $this->code,
+            'month' => $this->month,
+            'destination' => new DestinationResource($this->whenLoaded('destination')),
         ];
     }
 }

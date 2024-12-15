@@ -16,7 +16,7 @@ class SubmissionController extends Controller
      */
     public function index(Contestant $contestant)
     {
-        return view('submissions.index', [
+        return Inertia::render('submissions.index', [
             'contestant' => $contestant,
             'submissions' => $contestant->submissions
         ]);
@@ -37,7 +37,7 @@ class SubmissionController extends Controller
      */
     public function create(Contestant $contestant)
     {
-        return view('submissions.create', [
+        return Inertia::render('submissions.create', [
             'contestant' => $contestant
         ]);
     }
@@ -67,7 +67,7 @@ class SubmissionController extends Controller
      */
     public function show(Submission $submission)
     {
-        return view('submissions.show', [
+        return Inertia::render('submissions.show', [
             'submission' => $submission
         ]);
     }
@@ -77,7 +77,7 @@ class SubmissionController extends Controller
      */
     public function edit(Submission $submission)
     {
-        return view('submissions.edit', [
+        return Inertia::render('submissions.edit', [
             'submission' => $submission
         ]);
     }

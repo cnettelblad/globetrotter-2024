@@ -17,6 +17,7 @@ onMounted(() => {
 
 const props = defineProps<{
     contestants: Contestant[];
+    contestant: Contestant | undefined;
 }>();
 
 const handleInput = (event: Event) => {

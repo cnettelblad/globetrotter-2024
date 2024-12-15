@@ -23,9 +23,6 @@ class Destination extends Model
         'type' => DestinationType::class,
     ];
 
-    /**
-     * @return HasMany<Submission>
-     */
     public function submissions(): HasMany
     {
         return $this->hasMany(Submission::class);

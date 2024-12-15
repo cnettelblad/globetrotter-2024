@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Data\Discord\DiscordUser;
+use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Http\Client\RequestException;
@@ -30,11 +31,11 @@ class DiscordService
             );
     }
 
-    public function getUser(string $userId): ?DiscordUser
+    public function getUser(string|int $userId): ?DiscordUser
     {
         try {
             $response = $this->http->get("users/{$userId}");
-        } catch (RequestException $e) {
+        } catch (ConnectionException $e) {
             Log::error($e->getMessage());
 
             return null;
@@ -50,12 +51,15 @@ class DiscordService
     public function retryHandler(RequestException $e): bool
     {
         if ($e->response->status() === 429) {
-            $reset = ceil(
-                $e->response->collect()->get('retry_after')
+            $retryAfter = $e->response->collect()->get('retry_after');
+            $reset = (int) ceil(
+                is_numeric($retryAfter) ? (int) $retryAfter : 10
             ) + 1;
 
-            if (Cache::get(self::RATE_LIMIT_CACHE_KEY)) {
-                $reset += Cache::get(self::RATE_LIMIT_CACHE_KEY);
+            $currentReset = Cache::get(self::RATE_LIMIT_CACHE_KEY);
+
+            if ($currentReset && is_numeric($currentReset)) {
+                $reset += (int) $currentReset;
             }
 
             Cache::put(
@@ -74,8 +78,8 @@ class DiscordService
     {
         $rateLimit = Cache::get(self::RATE_LIMIT_CACHE_KEY);
 
-        if ($rateLimit) {
-            sleep($rateLimit);
+        if ($rateLimit && is_numeric($rateLimit)) {
+            sleep((int) $rateLimit);
         }
 
         return $request;

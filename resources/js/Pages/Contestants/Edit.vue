@@ -8,6 +8,8 @@ import GradientButton from "@/Components/Buttons/GradientButton.vue";
 import TextInput from "@/Components/Form/TextInput.vue";
 import InputError from "@/Components/Form/InputError.vue";
 import InputLabel from "@/Components/Form/InputLabel.vue";
+import ContestantSubmisssionsTable from "./Partials/ContestantSubmisssionsTable.vue";
+import AddSubmissionForm from "./AddSubmissionForm.vue";
 
 const props = defineProps<{
     contestant: Contestant;
@@ -27,7 +29,10 @@ const updateContestant = () => {
     });
 };
 
+const updateSubmission = () => {};
+
 const submittable = ref(true);
+const showAddForm = ref(false);
 </script>
 
 <template>
@@ -36,16 +41,9 @@ const submittable = ref(true);
     <AuthenticatedLayout>
         <div class="py-8">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
+                <h2 class="text-xl">Contestant</h2>
                 <section class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                    <header>
-                        <h2 class="text-lg font-medium text-gray-900">
-                            Editing: {{ contestant.username }}
-                        </h2>
-                    </header>
-                    <form
-                        @submit.prevent="updateContestant"
-                        class="mt-6 space-y-6"
-                    >
+                    <form @submit.prevent="updateContestant" class="space-y-6">
                         <div>
                             <InputLabel for="nickname" value="Nickname" />
                             <TextInput
@@ -84,18 +82,27 @@ const submittable = ref(true);
                     </form>
                 </section>
 
-                <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                    <div
-                        v-for="submission in contestant.submissions"
-                        :key="submission.id"
-                    >
-                        <h2 class="text-lg font-medium text-gray-900">
-                            {{ submission.month }}
-                        </h2>
-                        <p class="mt-1 text-sm text-gray-600">
-                            {{ submission.destination?.name }}
-                        </p>
-                    </div>
+                <div class="flex justify-between items-center">
+                    <h2 class="text-xl">Submissions</h2>
+                    <GradientButton @click="showAddForm = !showAddForm">
+                        Add Submission
+                    </GradientButton>
+                </div>
+
+                <div
+                    class="p-4 sm:p-8 bg-white shadow sm:rounded-lg"
+                    v-if="showAddForm"
+                >
+                    <AddSubmissionForm
+                        :contestant="contestant"
+                        @close="showAddForm = false"
+                    />
+                </div>
+
+                <div class="bg-white shadow sm:rounded-lg">
+                    <ContestantSubmisssionsTable
+                        :submissions="contestant.submissions ?? []"
+                    />
                 </div>
             </div>
         </div>
