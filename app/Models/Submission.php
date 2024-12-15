@@ -3,11 +3,13 @@
 namespace App\Models;
 
 use App\Enums\Month;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 
 class Submission extends Model
 {
@@ -34,6 +36,17 @@ class Submission extends Model
     public function destination(): BelongsTo
     {
         return $this->belongsTo(Destination::class);
+    }
+
+    public function image(): Attribute
+    {
+        return Attribute::make(
+            get: function (string|null $image) {
+                return $image
+                    ? Storage::url($image)
+                    : null;
+            }
+        );
     }
 
     public function storeImage(UploadedFile $image)

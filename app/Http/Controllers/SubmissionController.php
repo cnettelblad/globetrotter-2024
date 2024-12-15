@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateSubmissionRequest;
 use App\Models\Contestant;
 use App\Models\Destination;
 use App\Models\Submission;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class SubmissionController extends Controller
@@ -89,7 +90,18 @@ class SubmissionController extends Controller
     {
         $submission->update($request->validated());
 
-        return redirect()->route('submissions.index');
+        if ($request->input('destination') !== $submission->destination_id) {
+            $destination = Destination::findOrfail($request->input('destination'));
+            $submission->destination()->associate($destination);
+        }
+
+        if ($request->hasFile('image')) {
+            $submission->storeImage($request->file('image'));
+        }
+
+        $submission->save();
+
+        return redirect()->back();
     }
 
     /**

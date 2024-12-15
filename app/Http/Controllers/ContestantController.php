@@ -19,7 +19,12 @@ class ContestantController extends Controller
     public function index()
     {
         return Inertia::render('Contestants/List', [
-            'contestants' => Contestant::with('submissions')->get()
+            'contestants' => Contestant::withCount([
+                'submissions as score',
+                'submissions as lacks_image' => function ($query) {
+                    $query->whereNull('image');
+                }
+            ])->get()
         ]);
     }
 

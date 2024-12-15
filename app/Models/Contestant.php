@@ -24,10 +24,6 @@ class Contestant extends Model
         'avatar'
     ];
 
-    protected $appends = [
-        'score'
-    ];
-
     /**
      * The "booted" method of the model.
      */
@@ -67,13 +63,15 @@ class Contestant extends Model
     }
 
     /**
-     * Get the contestant score based on the number of submissions.
+     * Get the incomplete submissions for the contestant.
      */
-    protected function score(): Attribute
+    public function incompleteSubmissions(): Attribute
     {
         return Attribute::make(
             get: function () {
-                return $this->submissions()->count();
+                return $this->submissions()
+                    ->whereNull('image')
+                    ->get();
             }
         );
     }

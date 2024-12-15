@@ -10,6 +10,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
     delete: [Submission];
+    edit: [Submission];
 }>();
 </script>
 
@@ -18,12 +19,12 @@ const emit = defineEmits<{
         <TableActions>
             <ul class="py-1 text-sm text-gray-700">
                 <li>
-                    <Link
-                        :href="route('submissions.edit', submission.id)"
-                        class="block py-2 px-4 hover:bg-gray-100"
+                    <button
+                        @click="$emit('edit', submission)"
+                        class="block py-2 px-4 w-full text-left hover:bg-gray-100"
                     >
                         Edit
-                    </Link>
+                    </button>
                 </li>
             </ul>
             <div class="py-1">

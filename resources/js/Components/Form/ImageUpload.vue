@@ -1,20 +1,33 @@
 <script setup lang="ts">
 import { CloudArrowDownIcon, TrashIcon } from "@heroicons/vue/24/outline";
-import { onMounted, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 
-interface FileInputProps {
+interface ImageInputProps {
     multiple?: boolean;
+    existingImage?: string | null;
 }
 
 const model = defineModel<File | null>();
 const URL = window.URL || window.webkitURL;
-const { multiple = false } = defineProps<FileInputProps>();
+const { multiple = false, existingImage = null } =
+    defineProps<ImageInputProps>();
+const currentImage = ref(existingImage);
+const imagePreview = computed(() => {
+    return model.value ? URL.createObjectURL(model.value) : currentImage.value;
+});
 
 const handleFileSelection = async (e: Event) => {
     const target = e.target as HTMLInputElement;
     if (!target.files?.length) return;
     model.value = target.files[0];
 };
+
+const clearImage = () => {
+    model.value = null;
+    currentImage.value = null;
+};
+
+console.log(currentImage.value);
 </script>
 
 <template>
@@ -24,7 +37,7 @@ const handleFileSelection = async (e: Event) => {
             class="grid place-items-center relative w-full h-64 border-2 border-gray-300 border-dashed rounded-lg"
         >
             <input
-                v-if="!model"
+                v-if="!imagePreview"
                 id="dropzone-file"
                 type="file"
                 class="overlay cursor-pointer focus:outline-none"
@@ -36,17 +49,17 @@ const handleFileSelection = async (e: Event) => {
                 class="overlay grid place-items-center pt-5 pb-6 pointer-events-none cursor-pointer bg-gray-50"
             >
                 <div
-                    v-if="model"
+                    v-if="imagePreview"
                     class="relative rounded-lg bg-white shadow-lg p-2"
                 >
                     <img
-                        :src="URL.createObjectURL(model)"
+                        :src="imagePreview"
                         alt="Image preview"
                         class="max-h-48 object-cover rounded-lg"
                     />
                     <button
                         type="button"
-                        @click.prevent="model = null"
+                        @click.prevent="clearImage"
                         class="absolute top-4 right-4 p-2 shadow-md bg-white text-red-800 rounded-full pointer-events-auto"
                     >
                         <TrashIcon class="h-4 w-4" />

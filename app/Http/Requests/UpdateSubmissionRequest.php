@@ -18,7 +18,7 @@ class UpdateSubmissionRequest extends FormRequest
             'month' => [
                 'required',
                 Rule::enum(Month::class),
-                Rule::unique(Submission::class)->where(
+                Rule::unique(Submission::class)->ignore($submission)->where(
                     'contestant_id',
                     $submission->contestant_id
                 )

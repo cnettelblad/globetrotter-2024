@@ -9,6 +9,8 @@ import TableRow from "@/Components/Tables/TableRow.vue";
 import TableBodyCell from "@/Components/Tables/TableBodyCell.vue";
 import SubmissionActionsCell from "@/Components/Tables/SubmissionActionsCell.vue";
 import GradientButton from "@/Components/Buttons/GradientButton.vue";
+import GenericModal from "@/Components/Modals/GenericModal.vue";
+import EditSubmissionForm from "./EditSubmissionForm.vue";
 
 const props = defineProps<{
     submissions: Submission[];
@@ -37,7 +39,7 @@ const months = computed(() => {
         return { name: month, submission: entry };
     });
 });
-
+const editSubmission = ref<Submission | null>(null);
 const deleteContestant = ref<Contestant | null>(null);
 </script>
 
@@ -88,16 +90,25 @@ const deleteContestant = ref<Contestant | null>(null);
                 <SubmissionActionsCell
                     v-if="month.submission"
                     :submission="month.submission"
+                    @edit="editSubmission = month.submission"
                 />
                 <TableBodyCell v-else />
             </TableRow>
         </Table>
     </div>
-    <Teleport to="body">
+    <!-- <Teleport to="body">
         <DeletionConfirmation
             v-if="deleteContestant"
             :contestant="deleteContestant"
             @close="deleteContestant = null"
         />
+    </Teleport> -->
+    <Teleport to="body">
+        <GenericModal v-if="editSubmission" @close="editSubmission = null">
+            <EditSubmissionForm
+                :submission="editSubmission"
+                @success="editSubmission = null"
+            />
+        </GenericModal>
     </Teleport>
 </template>

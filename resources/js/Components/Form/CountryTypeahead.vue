@@ -7,6 +7,10 @@ import { debounce } from "lodash";
 import axios from "axios";
 import Emoji from "../Emoji.vue";
 
+interface TypeaheadProps {
+    existingDestination?: Destination | undefined | null;
+}
+const { existingDestination = null } = defineProps<TypeaheadProps>();
 const model = defineModel<string>();
 const selectedDestination = ref<Destination | null>(null);
 const input = ref<HTMLInputElement | null>(null);
@@ -16,6 +20,10 @@ const search = ref<string>();
 onMounted(() => {
     if (input.value?.hasAttribute("autofocus")) {
         input.value?.focus();
+    }
+
+    if (existingDestination) {
+        setDestination(existingDestination);
     }
 });
 

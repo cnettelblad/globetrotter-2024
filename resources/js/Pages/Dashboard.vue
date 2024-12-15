@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import AddSubmissionForm from "@/Pages/Contestants/AddSubmissionForm.vue";
+import AddSubmissionForm from "@/Pages/Contestants/Partials/AddSubmissionForm.vue";
 import { Head } from "@inertiajs/vue3";
 import CountriesBarplot from "@/Components/Charts/CountriesBarplot.vue";
 </script>
