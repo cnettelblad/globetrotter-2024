@@ -3,42 +3,42 @@ import InputError from "@/Components/Form/InputError.vue";
 import InputLabel from "@/Components/Form/InputLabel.vue";
 import { Contestant } from "@/types";
 import { useForm } from "@inertiajs/vue3";
+import axios from "axios";
+import { onMounted, ref } from "vue";
 import Dropdown from "@/Components/Form/Dropdown.vue";
+import ContestantTypeahead from "@/Components/Form/ContestantTypeahead.vue";
 import ImageUpload from "@/Components/Form/ImageUpload.vue";
 import CountryTypeahead from "@/Components/Form/CountryTypeahead.vue";
 import GradientButton from "@/Components/Buttons/GradientButton.vue";
-import Toast from "@/Components/Toast.vue";
-import { toastStore } from "@/stores/toast";
-import { computed } from "vue";
-
-const props = defineProps<{
-    contestant: Contestant;
-    disabledMonths: undefined | string[];
-}>();
 
 const form = useForm({
-    contestant: props.contestant?.id,
+    contestant: undefined,
     month: "",
     destination: "",
     image: null,
 });
 
-const months = computed(() =>
-    [
-        "January",
-        "February",
-        "March",
-        "April",
-        "May",
-        "June",
-        "July",
-        "August",
-        "September",
-        "October",
-        "November",
-        "December",
-    ].filter((month) => !props.disabledMonths?.includes(month))
-);
+const contestants = ref<Contestant[]>([]);
+const months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+];
+
+const getContestants = () => {
+    axios.get(route("api.v1.contestants.index")).then((response) => {
+        contestants.value = response.data;
+    });
+};
 
 const addSubmission = () => {
     form.post(
@@ -47,23 +47,40 @@ const addSubmission = () => {
             preserveScroll: true,
             onSuccess: () => {
                 form.reset("month", "destination", "image");
-                toastStore.addToast("Submission added", "success");
             },
             onError: () => {},
         }
     );
 };
+
+onMounted(() => {
+    getContestants();
+});
 </script>
 
 <template>
     <section>
         <header>
-            <h2 class="text-lg font-medium text-gray-900">
-                Add a submission to {{ contestant.username }}
-            </h2>
+            <h2 class="text-lg font-medium text-gray-900">Add a submission</h2>
+
+            <p class="mt-1 text-sm text-gray-600">
+                Add a submission to the Globetrotter event.
+            </p>
         </header>
 
         <form @submit.prevent="addSubmission" class="mt-6 space-y-6">
+            <!-- <div>
+                <InputLabel
+                    for="contestant"
+                    value="Select a Contestant"
+                    required
+                />
+
+                <ContestantTypeahead :contestants="contestants" />
+
+                <InputError :message="form.errors.contestant" class="mt-2" />
+            </div> -->
+
             <div class="grid md:grid-cols-2 md:gap-6">
                 <div>
                     <InputLabel
