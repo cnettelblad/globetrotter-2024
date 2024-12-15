@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Spatie\Image\Image;
 
 class Submission extends Model
 {
@@ -51,6 +52,16 @@ class Submission extends Model
 
     public function storeImage(UploadedFile $image)
     {
-        $this->image = $image->store('submissions');
+        $destination = 'submissions/' . uniqid() . '.webp';
+
+        Image::load($image->getPathname())
+            ->width(1920)
+            ->height(1920)
+            ->format('webp')
+            ->quality(80)
+            ->optimize()
+            ->save(Storage::path($destination));
+
+        $this->image = $destination;
     }
 }
