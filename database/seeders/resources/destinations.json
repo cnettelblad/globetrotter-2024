@@ -1792,6 +1792,11 @@
             "iso": "GB-SCT"
         },
         {
+            "name": "Sint Maarten",
+            "emoji": "🇸🇽",
+            "iso": "SX"
+        },
+        {
             "name": "Wales",
             "emoji": "🏴󠁧󠁢󠁷󠁬󠁳󠁿",
             "iso": "GB-WLS"
