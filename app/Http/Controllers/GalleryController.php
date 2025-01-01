@@ -14,7 +14,9 @@ class GalleryController extends Controller
     public function __invoke(Request $request)
     {
         return Inertia::render('Gallery', [
-            'submissions' => Submission::with('contestant', 'destination')->get(),
+            'submissions' => Submission::whereNotNull('image')
+                ->with('contestant', 'destination')
+                ->get(),
         ]);
     }
 }
