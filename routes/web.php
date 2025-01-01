@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ContestantController;
+use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\ImportController;
 use App\Http\Controllers\ImportFailureController;
 use App\Http\Controllers\ProfileController;
@@ -19,6 +20,8 @@ Route::get('/', function () {
         'contestants' => Contestant::with('submissions')->get(),
     ]);
 });
+
+Route::get('/gallery', GalleryController::class)->name('gallery');
 
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', function () {
