@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted } from "vue";
-import PhotoSwipeLightbox from "photoswipe/lightbox";
-import "photoswipe/style.css";
 
 type Image = {
     url: string;
@@ -11,26 +9,6 @@ type Image = {
 const props = defineProps<{
     images: Image[];
 }>();
-
-const lightbox = new PhotoSwipeLightbox({
-    children: "a",
-    pswpModule: () => import("photoswipe"),
-    padding: { top: 100, bottom: 100, left: 50, right: 50 },
-});
-
-lightbox.init();
-
-lightbox.loadAndOpen(
-    0,
-    props.images.map((image) => {
-        return {
-            src: image.url,
-            // width: 1200,
-            // height: 1200,
-            title: image.description,
-        };
-    })
-);
 
 const emit = defineEmits(["close"]);
 
@@ -48,5 +26,33 @@ onMounted(() => document.addEventListener("keydown", cancelOnEscape));
 onUnmounted(() => document.removeEventListener("keydown", cancelOnEscape));
 </script>
 <template>
-    <div></div>
+    <div
+        class="flex overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 max-h-screen"
+    >
+        <div
+            class="flex flex-col h-full max-h-screen items-center justify-center"
+        >
+            <div class="flex p-8 max-h-full justify-center">
+                <img
+                    :src="props.images[0].url"
+                    :alt="props.images[0].description"
+                    class="max-w-full max-h-[90vh]"
+                />
+            </div>
+            <div class="flex gap-8 align-middle items-center">
+                <div
+                    v-for="(image, index) in props.images"
+                    :key="index"
+                    class="p-1 bg-white"
+                >
+                    <img
+                        :src="image.url"
+                        :alt="image.description"
+                        class="w-16 max-h-full"
+                    />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="bg-gray-900/50 fixed inset-0 z-40"></div>
 </template>
