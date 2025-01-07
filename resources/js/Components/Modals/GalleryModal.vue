@@ -27,7 +27,7 @@ onUnmounted(() => document.removeEventListener("keydown", cancelOnEscape));
 </script>
 <template>
     <div
-        class="flex overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 max-h-screen"
+        class="flex overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-screen max-h-screen"
     >
         <div
             class="flex flex-col h-full max-h-screen items-center justify-center"
@@ -36,7 +36,7 @@ onUnmounted(() => document.removeEventListener("keydown", cancelOnEscape));
                 <img
                     :src="props.images[0].url"
                     :alt="props.images[0].description"
-                    class="max-w-full max-h-[90vh]"
+                    class="max-w-full max-h-[80vh]"
                 />
             </div>
             <div class="flex gap-8 align-middle items-center">
