@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted } from "vue";
+import { onMounted, onUnmounted, ref } from "vue";
 
 type Image = {
     url: string;
@@ -22,6 +22,8 @@ const cancelOnEscape = (e: KeyboardEvent) => {
     }
 };
 
+const currentImage = ref<number>(0);
+
 onMounted(() => document.addEventListener("keydown", cancelOnEscape));
 onUnmounted(() => document.removeEventListener("keydown", cancelOnEscape));
 </script>
@@ -34,8 +36,8 @@ onUnmounted(() => document.removeEventListener("keydown", cancelOnEscape));
         >
             <div class="flex p-8 max-h-full justify-center">
                 <img
-                    :src="props.images[0].url"
-                    :alt="props.images[0].description"
+                    :src="props.images[currentImage].url"
+                    :alt="props.images[currentImage].description"
                     class="max-w-full max-h-[80vh]"
                 />
             </div>
