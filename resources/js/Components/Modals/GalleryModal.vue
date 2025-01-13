@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ChevronLeftIcon, ChevronRightIcon, XMarkIcon } from "@heroicons/vue/24/outline";
 import { onMounted, onUnmounted, ref } from "vue";
 
 type Image = {
@@ -16,17 +17,35 @@ const cancel = () => {
     emit("close");
 };
 
-const cancelOnEscape = (e: KeyboardEvent) => {
-    if (e.key === "Escape") {
-        cancel();
+const handleKeyEvents = (e: KeyboardEvent) => {
+    switch (e.key) {
+        case "Escape":
+            cancel();
+            break;
+        case "ArrowLeft":
+            prevImage();
+            break;
+        case "ArrowRight":
+            nextImage();
+            break;
     }
 };
 
 const currentImage = ref<number>(0);
 
-onMounted(() => document.addEventListener("keydown", cancelOnEscape));
-onUnmounted(() => document.removeEventListener("keydown", cancelOnEscape));
+const prevImage = () => {
+    currentImage.value =
+        (currentImage.value - 1 + props.images.length) % props.images.length;
+};
+
+const nextImage = () => {
+    currentImage.value = (currentImage.value + 1) % props.images.length;
+};
+
+onMounted(() => document.addEventListener("keydown", handleKeyEvents));
+onUnmounted(() => document.removeEventListener("keydown", handleKeyEvents));
 </script>
+
 <template>
     <div
         class="flex overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-screen max-h-screen"
@@ -34,6 +53,22 @@ onUnmounted(() => document.removeEventListener("keydown", cancelOnEscape));
         <div
             class="flex flex-col h-full max-h-screen items-center justify-center"
         >
+
+            <button
+                class="absolute top-4 right-4 text-gray-200"
+                @click="cancel"
+                aria-label="Close"
+            >
+                <XMarkIcon class="w-16 h-16" />
+            </button>
+
+            <button
+                class="absolute left-0 top-1/2 transform -translate-y-1/2 text-white py-32 px-4 hover:bg-black/50"
+                @click="prevImage"
+            >
+                <ChevronLeftIcon class="h-12 w-12" />
+            </button>
+
             <div class="flex p-8 max-h-full justify-center">
                 <img
                     :src="props.images[currentImage].url"
@@ -41,16 +76,25 @@ onUnmounted(() => document.removeEventListener("keydown", cancelOnEscape));
                     class="max-w-full max-h-[80vh]"
                 />
             </div>
-            <div class="flex gap-8 align-middle items-center">
+
+            <button
+                class="absolute right-0 top-1/2 transform -translate-y-1/2 text-white py-32 px-4 hover:bg-black/50"
+                @click="nextImage"
+            >
+                <ChevronRightIcon class="h-12 w-12" />
+            </button>
+
+            <div class="flex gap-8 align-middle items-center overflow-hidden relative left-0 right-0">
                 <div
                     v-for="(image, index) in props.images"
                     :key="index"
-                    class="p-1 bg-white"
+                    class="p-1 bg-white min-w-16"
                 >
                     <img
                         :src="image.url"
                         :alt="image.description"
                         class="w-16 max-h-full"
+                        @click="currentImage = index"
                     />
                 </div>
             </div>
