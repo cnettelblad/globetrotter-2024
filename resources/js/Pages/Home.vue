@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Head, Link } from "@inertiajs/vue3";
 import SubmissionCard from "@/Components/Submission/SubmissionCard.vue";
+import GalleryModal from "@/Components/Modals/GalleryModal.vue";
 import TextInput from "@/Components/Form/TextInput.vue";
 import { ref } from "vue";
 import { Contestant } from "@/types";
@@ -9,14 +10,8 @@ const props = defineProps<{
     canLogin?: boolean;
     canRegister?: boolean;
     contestants: Contestant[];
+    images: { url: string; description: string }[];
 }>();
-
-function handleImageError() {
-    document.getElementById("screenshot-container")?.classList.add("!hidden");
-    document.getElementById("docs-card")?.classList.add("!row-span-1");
-    document.getElementById("docs-card-content")?.classList.add("!flex-row");
-    document.getElementById("background")?.classList.add("!hidden");
-}
 
 function filteredContestants() {
     if (!props.contestants) return [];
@@ -29,6 +24,8 @@ function filteredContestants() {
     });
 }
 
+const showModal = ref(true);
+const modalImages = ref(props.images);
 const search = ref("");
 </script>
 
@@ -88,13 +85,7 @@ const search = ref("");
                 </main>
 
                 <footer class="py-16 text-center text-sm text-black">
-                    Built by
-                    <a
-                        href="https://github.com/cnettelblad"
-                        class="text-black font-bold"
-                        >Carl</a
-                    >
-                    with
+                    Built with
                     <a href="https://vuejs.org/" class="text-teal-600 font-bold"
                         >Vue</a
                     >,
@@ -108,9 +99,15 @@ const search = ref("");
                         href="https://tailwindcss.com/"
                         class="text-blue-600 font-bold"
                         >Tailwind CSS</a
-                    >.
+                    >
+                    for
+                    <a
+                        href="https://discord.gg/Xvv2vPFKwr"
+                        class=" text-indigo-600 font-bold"
+                        >Wanderlust</a>.
                 </footer>
             </div>
         </div>
     </div>
+    <GalleryModal v-if="showModal" :images="modalImages" @close="showModal = false" />
 </template>
