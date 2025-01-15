@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
-import { Link } from "@inertiajs/vue3";
 import { Submission } from "@/types";
 import SubmissionItem from "./SubmissionItem.vue";
 
@@ -41,17 +40,8 @@ const open = ref(false);
 <template>
     <div class="transition" :class="open ? 'row-span-4' : null">
         <div class="relative bg-white shadow overflow-hidden sm:rounded-lg">
-            <!-- Count badge -->
-            <div class="absolute top-1 right-2">
-                <span
-                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium leading-4 bg-sky-900 text-gray-100"
-                >
-                    {{ props.submissions?.length ?? 0 }} / 12
-                </span>
-            </div>
-
             <!-- User info -->
-            <div class="flex flex-row items-center px-4 py-5 sm:px-6">
+            <div class="flex flex-row items-center px-4 py-5 sm:px-6 relative">
                 <img
                     :src="props.avatar"
                     alt=""
@@ -69,6 +59,15 @@ const open = ref(false);
                     >
                         {{ props.username }}
                     </p>
+                </div>
+
+                <!-- Count badge -->
+                <div class="absolute top-1 right-2">
+                    <span
+                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium leading-4 bg-sky-900 text-gray-100"
+                    >
+                        {{ props.submissions?.length ?? 0 }} / 12
+                    </span>
                 </div>
             </div>
 
