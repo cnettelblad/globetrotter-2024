@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ContestantController;
 use App\Http\Controllers\GalleryController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ImportController;
 use App\Http\Controllers\ImportFailureController;
 use App\Http\Controllers\ProfileController;
@@ -14,12 +15,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('/', function () {
-    return Inertia::render('Home', [
-        'canLogin' => Route::has('login'),
-        'contestants' => Contestant::with('submissions')->get(),
-    ]);
-});
+Route::get('/', HomeController::class)->name('home');
 
 Route::get('/gallery', GalleryController::class)->name('gallery');
 
