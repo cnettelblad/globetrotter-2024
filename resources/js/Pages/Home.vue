@@ -3,29 +3,28 @@ import { Head, Link } from "@inertiajs/vue3";
 import SubmissionCard from "@/Components/Submission/SubmissionCard.vue";
 import GalleryModal from "@/Components/Modals/GalleryModal.vue";
 import TextInput from "@/Components/Form/TextInput.vue";
-import { ref } from "vue";
-import { Contestant } from "@/types";
+import { computed, ref } from "vue";
+import { Contestant, ResourceCollection } from "@/types";
 
 const props = defineProps<{
-    canLogin?: boolean;
-    canRegister?: boolean;
-    contestants: Contestant[];
-    images: { url: string; description: string }[];
+    contestants: ResourceCollection<Contestant>
 }>();
 
-function filteredContestants() {
-    if (!props.contestants) return [];
-    return props.contestants.filter((contestant) => {
-        if (search.value.length === 0) return true;
-        const lcSearch = search.value.toLowerCase();
+const filteredContestants = computed(() => {
+    if (!props.contestants.data) return [];
+    if (!search.value) return props.contestants.data;
+
+    const lcSearch = search.value.toLowerCase();
+
+    return props.contestants.data.filter((contestant) => {
         if (contestant.nickname?.toLowerCase().includes(lcSearch)) return true;
         if (contestant.username?.toLowerCase().includes(lcSearch)) return true;
         if (contestant.discord_id?.toString().includes(lcSearch)) return true;
     });
-}
+});
 
-const showModal = ref(true);
-const modalImages = ref(props.images);
+const showModal = ref(false);
+const modalImages = ref([]);
 const search = ref("");
 </script>
 
@@ -39,42 +38,27 @@ const search = ref("");
                 <header
                     class="grid grid-cols-2 items-center gap-2 py-10 lg:grid-cols-3"
                 >
-                    <div class="flex lg:justify-start lg:col-start-1">
+                    <h1>
+                        <span class="text-lg font-bold text-gray-500">Wanderlust</span><br />
+                        <span class="text-4xl sm:text-6xl font-bold text-gray-900">Globetrotter</span><br />
+                        <span class="text-lg font-bold text-gray-500">2024</span>
+                    </h1>
+                </header>
+
+                <main class="mt-6">
+                    <div class="mb-6">
                         <TextInput
                             v-model="search"
                             placeholder="Search by nickname, username, or Discord ID"
                             class="w-full"
                         />
                     </div>
-                    <div class="flex lg:justify-center lg:col-start-2">
-                        Wanderlust Globetrotter 2024
-                    </div>
-                    <nav v-if="canLogin" class="-mx-3 flex flex-1 justify-end">
-                        <Link
-                            v-if="$page.props.auth.user"
-                            :href="route('dashboard')"
-                            class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20]"
-                        >
-                            Dashboard
-                        </Link>
 
-                        <template v-else>
-                            <Link
-                                :href="route('login')"
-                                class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20]"
-                            >
-                                Admin
-                            </Link>
-                        </template>
-                    </nav>
-                </header>
-
-                <main class="mt-6">
                     <div
-                        class="grid gap-6 grid-cols-2 lg:grid-cols-4 auto-rows-auto grid-flow-dense"
+                        class="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 auto-rows-auto grid-flow-dense"
                     >
                         <SubmissionCard
-                            v-for="contestant in filteredContestants()"
+                            v-for="contestant in filteredContestants"
                             :key="contestant.id"
                             :nickname="contestant.nickname"
                             :username="contestant.username"
