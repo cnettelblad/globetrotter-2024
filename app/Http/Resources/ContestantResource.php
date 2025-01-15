@@ -27,6 +27,7 @@ class ContestantResource extends JsonResource
             'id' => $this->id,
             'username' => $this->username,
             'nickname' => $this->nickname,
+            'avatar' => $this->avatar,
             'submissions' => SubmissionResource::collection($this->whenLoaded('submissions')),
             'score' => $this->whenHas('submissions_count')
         ];
