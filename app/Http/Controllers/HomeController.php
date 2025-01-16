@@ -20,6 +20,7 @@ class HomeController extends Controller
                     ->with('submissions')
                     ->withCount('submissions')
                     ->orderBy('submissions_count', 'desc')
+                    ->orderBy('nickname')
                     ->get()
             )
         ]);
