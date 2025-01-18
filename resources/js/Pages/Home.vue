@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { Head, Link } from "@inertiajs/vue3";
+import { Head } from "@inertiajs/vue3";
 import SubmissionCard from "@/Components/Submission/SubmissionCard.vue";
 import GalleryModal from "@/Components/Modals/GalleryModal.vue";
 import TextInput from "@/Components/Form/TextInput.vue";
 import { computed, ref } from "vue";
 import { Contestant, ResourceCollection } from "@/types";
+import { GlobeAmericasIcon, GlobeEuropeAfricaIcon } from "@heroicons/vue/24/outline";
 
 const props = defineProps<{
     contestants: ResourceCollection<Contestant>
@@ -29,23 +30,25 @@ const search = ref("");
 </script>
 
 <template>
-    <Head title="Welcome" />
+    <Head title="Submissions" />
     <div class="bg-gray-50">
         <div
             class="relative min-h-screen flex flex-col items-center selection:bg-[#FF2D20] selection:text-white"
         >
             <div class="relative w-full max-w-2xl px-6 lg:max-w-7xl">
                 <header
-                    class="grid grid-cols-2 items-center gap-2 py-10 lg:grid-cols-3"
+                    class="py-2 text-center"
                 >
                     <h1>
-                        <span class="text-lg font-bold text-gray-500">Wanderlust</span><br />
-                        <span class="text-4xl sm:text-6xl font-bold text-gray-900">Globetrotter</span><br />
-                        <span class="text-lg font-bold text-gray-500">2024</span>
+                        <span class="text-lg font-bold text-gray-900">Wanderlust</span><br />
+                        <span class="text-4xl sm:text-6xl font-bold text-indigo-800">
+                            Gl<GlobeEuropeAfricaIcon class="h-8 w-8 sm:h-12 sm:w-12 inline-block" />betr<GlobeAmericasIcon class="h-8 w-8 sm:h-12 sm:w-12 inline-block" />tter
+                        </span><br />
+                        <span class="text-lg font-bold text-gray-900">2024</span>
                     </h1>
                 </header>
 
-                <main class="mt-6">
+                <main class="mt-2">
                     <div class="mb-6">
                         <TextInput
                             v-model="search"
