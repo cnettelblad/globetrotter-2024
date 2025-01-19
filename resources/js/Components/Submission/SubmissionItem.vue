@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Destination } from "@/types";
 import Emoji from "@/Components/Emoji.vue";
+import { PhotoIcon } from "@heroicons/vue/24/outline";
 
 const props = defineProps<{
     month: string;
@@ -16,10 +17,11 @@ const props = defineProps<{
         >
             {{ month }}
         </span>
-        <div class="ml-4 flex-shrink-0">
+        <div class="px-4 flex-shrink-0 overflow-hidden max-w-full">
             <p v-if="destination" class="font-medium text-gray-900">
                 <Emoji>{{ destination.emoji }}</Emoji>
                 {{ destination.name }}
+                <PhotoIcon class="h-4 w-4 text-green-800 inline-block" />
             </p>
             <p v-else class="font-medium text-gray-400">
                 <Emoji>🏳️</Emoji>
