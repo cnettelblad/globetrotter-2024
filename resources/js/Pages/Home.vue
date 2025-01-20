@@ -6,6 +6,7 @@ import TextInput from "@/Components/Form/TextInput.vue";
 import { computed, ref } from "vue";
 import { Contestant, ResourceCollection } from "@/types";
 import { GlobeAmericasIcon, GlobeEuropeAfricaIcon } from "@heroicons/vue/24/outline";
+import ApplicationLogo from "@/Components/ApplicationLogo.vue";
 
 const props = defineProps<{
     contestants: ResourceCollection<Contestant>
@@ -39,13 +40,7 @@ const search = ref("");
                 <header
                     class="py-2 text-center"
                 >
-                    <h1>
-                        <span class="text-lg font-bold text-gray-900">Wanderlust</span><br />
-                        <span class="text-4xl sm:text-6xl font-bold text-indigo-800">
-                            Gl<GlobeEuropeAfricaIcon class="h-8 w-8 sm:h-12 sm:w-12 inline-block" />betr<GlobeAmericasIcon class="h-8 w-8 sm:h-12 sm:w-12 inline-block" />tter
-                        </span><br />
-                        <span class="text-lg font-bold text-gray-900">2024</span>
-                    </h1>
+                    <ApplicationLogo class="max-h-64 mx-auto" />
                 </header>
 
                 <main class="mt-2">
