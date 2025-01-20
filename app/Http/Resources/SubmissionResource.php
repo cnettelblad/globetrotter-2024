@@ -26,6 +26,7 @@ class SubmissionResource extends JsonResource
         return [
             'id' => $this->id,
             'month' => $this->month,
+            'image' => $this->image,
             'destination' => new DestinationResource($this->whenLoaded('destination')),
         ];
     }

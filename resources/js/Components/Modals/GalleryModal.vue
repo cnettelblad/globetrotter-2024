@@ -1,14 +1,11 @@
 <script setup lang="ts">
+import { Submission } from "@/types";
 import { ChevronLeftIcon, ChevronRightIcon, XMarkIcon } from "@heroicons/vue/24/outline";
 import { onMounted, onUnmounted, ref } from "vue";
 
-type Image = {
-    url: string;
-    description: string;
-};
-
 const props = defineProps<{
-    images: Image[];
+    submissions: Submission[];
+    start?: number;
 }>();
 
 const emit = defineEmits(["close"]);
@@ -31,15 +28,15 @@ const handleKeyEvents = (e: KeyboardEvent) => {
     }
 };
 
-const currentImage = ref<number>(0);
+const currentImage = ref<number>(props.start ?? 0);
 
 const prevImage = () => {
     currentImage.value =
-        (currentImage.value - 1 + props.images.length) % props.images.length;
+        (currentImage.value - 1 + props.submissions.length) % props.submissions.length;
 };
 
 const nextImage = () => {
-    currentImage.value = (currentImage.value + 1) % props.images.length;
+    currentImage.value = (currentImage.value + 1) % props.submissions.length;
 };
 
 onMounted(() => document.addEventListener("keydown", handleKeyEvents));
@@ -71,8 +68,8 @@ onUnmounted(() => document.removeEventListener("keydown", handleKeyEvents));
 
             <div class="flex p-8 max-h-full justify-center">
                 <img
-                    :src="props.images[currentImage].url"
-                    :alt="props.images[currentImage].description"
+                    :src="props.submissions[currentImage].image"
+                    :alt="props.submissions[currentImage].destination?.name"
                     class="max-w-full max-h-[80vh]"
                 />
             </div>
@@ -86,13 +83,13 @@ onUnmounted(() => document.removeEventListener("keydown", handleKeyEvents));
 
             <div class="flex gap-8 align-middle items-center overflow-hidden relative left-0 right-0">
                 <div
-                    v-for="(image, index) in props.images"
+                    v-for="(submission, index) in props.submissions"
                     :key="index"
                     class="p-1 bg-white min-w-16"
                 >
                     <img
-                        :src="image.url"
-                        :alt="image.description"
+                        :src="submission.image"
+                        :alt="submission.destination?.name"
                         class="w-16 max-h-full"
                         @click="currentImage = index"
                     />

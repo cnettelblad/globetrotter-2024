@@ -4,7 +4,7 @@ import SubmissionCard from "@/Components/Submission/SubmissionCard.vue";
 import GalleryModal from "@/Components/Modals/GalleryModal.vue";
 import TextInput from "@/Components/Form/TextInput.vue";
 import { computed, ref } from "vue";
-import { Contestant, ResourceCollection } from "@/types";
+import { Contestant, ResourceCollection, Submission } from "@/types";
 import { GlobeAmericasIcon, GlobeEuropeAfricaIcon } from "@heroicons/vue/24/outline";
 import ApplicationLogo from "@/Components/ApplicationLogo.vue";
 
@@ -26,7 +26,7 @@ const filteredContestants = computed(() => {
 });
 
 const showModal = ref(false);
-const modalImages = ref([]);
+const modalSubmissions = ref<Submission[]>([]);
 const search = ref("");
 </script>
 
@@ -62,6 +62,10 @@ const search = ref("");
                             :username="contestant.username"
                             :avatar="contestant.avatar"
                             :submissions="contestant.submissions"
+                            @show-gallery="() => {
+                                modalSubmissions = contestant.submissions ?? [];
+                                showModal = true;
+                            }"
                         />
                     </div>
                 </main>
@@ -91,5 +95,9 @@ const search = ref("");
             </div>
         </div>
     </div>
-    <GalleryModal v-if="showModal" :images="modalImages" @close="showModal = false" />
+    <GalleryModal
+        v-if="showModal"
+        :submissions="modalSubmissions"
+        @close="showModal = false"
+    />
 </template>

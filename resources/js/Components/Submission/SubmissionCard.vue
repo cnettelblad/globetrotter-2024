@@ -35,6 +35,7 @@ const monthlySubmissions = computed(() => {
 });
 
 const open = ref(false);
+const emits = defineEmits(["showGallery"]);
 </script>
 
 <template>
@@ -91,6 +92,7 @@ const open = ref(false);
                                     :month="monthSubmission.month"
                                     :destination="monthSubmission?.submission"
                                     :key="monthSubmission.month"
+                                    @click="emits('showGallery')"
                                 />
                             </ul>
                         </dd>
