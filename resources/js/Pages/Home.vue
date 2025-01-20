@@ -34,7 +34,7 @@ const search = ref("");
     <Head title="Submissions" />
     <div class="bg-gray-50">
         <div
-            class="relative min-h-screen flex flex-col items-center selection:bg-[#FF2D20] selection:text-white"
+            class="relative min-h-screen flex flex-col items-center"
         >
             <div class="relative w-full max-w-2xl px-6 lg:max-w-7xl">
                 <header
