@@ -25,6 +25,11 @@ const filteredContestants = computed(() => {
     });
 });
 
+const openModal = (submissions: Submission[]) => {
+    modalSubmissions.value = submissions;
+    showModal.value = true;
+};
+
 const showModal = ref(false);
 const modalSubmissions = ref<Submission[]>([]);
 const search = ref("");
@@ -36,7 +41,7 @@ const search = ref("");
         <div
             class="relative min-h-screen flex flex-col items-center"
         >
-            <div class="relative w-full max-w-2xl px-6 lg:max-w-7xl">
+            <div class="relative w-full px-6 max-w-7xl">
                 <header
                     class="py-2 text-center"
                 >
@@ -53,7 +58,7 @@ const search = ref("");
                     </div>
 
                     <div
-                        class="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 auto-rows-auto grid-flow-dense"
+                        class="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 auto-rows-auto grid-flow-dense"
                     >
                         <SubmissionCard
                             v-for="contestant in filteredContestants"
@@ -62,10 +67,7 @@ const search = ref("");
                             :username="contestant.username"
                             :avatar="contestant.avatar"
                             :submissions="contestant.submissions"
-                            @show-gallery="() => {
-                                modalSubmissions = contestant.submissions ?? [];
-                                showModal = true;
-                            }"
+                            @show-gallery="openModal(contestant.submissions ?? [])"
                         />
                     </div>
                 </main>
@@ -96,7 +98,7 @@ const search = ref("");
         </div>
     </div>
     <GalleryModal
-        v-if="showModal"
+        v-if="showModal && modalSubmissions"
         :submissions="modalSubmissions"
         @close="showModal = false"
     />

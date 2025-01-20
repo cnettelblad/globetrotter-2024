@@ -77,7 +77,7 @@ const emits = defineEmits(["showGallery"]);
                     <div class="bg-gray-50" :class="open ? 'pb-4' : null">
                         <button
                             @click="open = !open"
-                            class="text-sm font-medium w-full py-5 text-gray-500"
+                            class="text-sm font-medium w-full py-5 text-gray-500 cursor-pointer"
                         >
                             {{ open ? "- Hide" : "+ Show" }} Submissions
                         </button>
@@ -92,6 +92,7 @@ const emits = defineEmits(["showGallery"]);
                                     :month="monthSubmission.month"
                                     :destination="monthSubmission?.submission"
                                     :key="monthSubmission.month"
+                                    class="cursor-pointer"
                                     @click="emits('showGallery')"
                                 />
                             </ul>
