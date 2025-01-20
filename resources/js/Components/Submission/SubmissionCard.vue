@@ -30,7 +30,7 @@ const monthlySubmissions = computed(() => {
         const entry = props.submissions?.find(
             (submission) => submission.month === month
         );
-        return { month, submission: entry?.destination };
+        return { month, submission: entry };
     });
 });
 
@@ -90,10 +90,13 @@ const emits = defineEmits(["showGallery"]);
                                 <SubmissionItem
                                     v-for="monthSubmission in monthlySubmissions"
                                     :month="monthSubmission.month"
-                                    :destination="monthSubmission?.submission"
+                                    :destination="monthSubmission.submission?.destination"
                                     :key="monthSubmission.month"
-                                    class="cursor-pointer"
-                                    @click="emits('showGallery')"
+                                    :class="{'cursor-pointer': monthSubmission.submission}"
+                                    @click="monthSubmission.submission
+                                        ? emits('showGallery', monthSubmission.submission)
+                                        : null
+                                    "
                                 />
                             </ul>
                         </dd>

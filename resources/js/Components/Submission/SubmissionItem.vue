@@ -22,7 +22,7 @@ const props = defineProps<{
                 <Emoji>{{ destination ? destination.emoji : "🏳️" }}</Emoji>
             </p>
             <p
-                class="font-medium overflow-ellipsis whitespace-nowrap"
+                class="font-medium overflow-hidden overflow-ellipsis whitespace-nowrap"
                 :class="{
                     'text-gray-900': destination,
                     'text-gray-400': !destination
@@ -30,7 +30,7 @@ const props = defineProps<{
             >
                 {{ destination ? destination.name : "-" }}
             </p>
-            <p class="invisible group-hover:visible">
+            <p class="invisible" :class="{ 'group-hover:visible': destination }">
                 <PhotoIcon class="h-5 w-5 text-green-800 inline-block" />
             </p>
         </div>

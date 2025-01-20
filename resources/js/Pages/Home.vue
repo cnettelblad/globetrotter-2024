@@ -5,7 +5,6 @@ import GalleryModal from "@/Components/Modals/GalleryModal.vue";
 import TextInput from "@/Components/Form/TextInput.vue";
 import { computed, ref } from "vue";
 import { Contestant, ResourceCollection, Submission } from "@/types";
-import { GlobeAmericasIcon, GlobeEuropeAfricaIcon } from "@heroicons/vue/24/outline";
 import ApplicationLogo from "@/Components/ApplicationLogo.vue";
 
 const props = defineProps<{
@@ -25,13 +24,24 @@ const filteredContestants = computed(() => {
     });
 });
 
-const openModal = (submissions: Submission[]) => {
+const openGalleryModal = (submissions: Submission[], startSubmission?: Submission) => {
+    if (startSubmission) {
+        const index = submissions.findIndex(
+            (submission) => submission.id === startSubmission.id
+        );
+
+        if (index !== -1) {
+            modalSubmissionsStart.value = index;
+        }
+    }
+
     modalSubmissions.value = submissions;
     showModal.value = true;
 };
 
 const showModal = ref(false);
 const modalSubmissions = ref<Submission[]>([]);
+const modalSubmissionsStart = ref(0);
 const search = ref("");
 </script>
 
@@ -67,7 +77,7 @@ const search = ref("");
                             :username="contestant.username"
                             :avatar="contestant.avatar"
                             :submissions="contestant.submissions"
-                            @show-gallery="openModal(contestant.submissions ?? [])"
+                            @show-gallery="(submission) => openGalleryModal(contestant.submissions ?? [], submission)"
                         />
                     </div>
                 </main>
@@ -100,6 +110,7 @@ const search = ref("");
     <GalleryModal
         v-if="showModal && modalSubmissions"
         :submissions="modalSubmissions"
+        :start="modalSubmissionsStart"
         @close="showModal = false"
     />
 </template>
