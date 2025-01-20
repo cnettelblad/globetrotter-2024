@@ -39,8 +39,14 @@ const nextImage = () => {
     currentImage.value = (currentImage.value + 1) % props.submissions.length;
 };
 
-onMounted(() => document.addEventListener("keydown", handleKeyEvents));
-onUnmounted(() => document.removeEventListener("keydown", handleKeyEvents));
+onMounted(() => {
+    document.addEventListener("keydown", handleKeyEvents);
+    document.body.style.overflow = "hidden";
+});
+onUnmounted(() => {
+    document.removeEventListener("keydown", handleKeyEvents)
+    document.body.style.overflow = "";
+});
 </script>
 
 <template>
