@@ -1,1 +1,0 @@
-import{_ as t}from"./_plugin-vue_export-helper-DlAUqK2U.js";import{o,g as n,r}from"./app-DTqmi5Mx.js";const s={},c={class:"button green"};function a(e,_){return o(),n("button",c,[r(e.$slots,"default",{},void 0,!0)])}const u=t(s,[["render",a],["__scopeId","data-v-8833e141"]]);export{u as G};
