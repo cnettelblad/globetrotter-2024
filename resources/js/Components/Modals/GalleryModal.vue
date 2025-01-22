@@ -5,6 +5,7 @@ import { computed, nextTick, onMounted, onUnmounted, ref } from "vue";
 
 const props = defineProps<{
     submissions: Submission[];
+    title: string;
     start?: number;
 }>();
 
@@ -65,7 +66,8 @@ onUnmounted(() => {
     <div
         class="flex flex-col overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-screen max-h-screen"
     >
-        <div class="grid w-full" id="gallery-header">
+        <div class="grid grid-cols-6 w-full" id="gallery-header">
+            <h2 class="text-4xl font-bold col-start-2 bg-gray-800 col-span-4 text-white p-4 w-full text-center whitespace-nowrap overflow-hidden overflow-ellipsis">{{ title }}</h2>
             <button
                 class="text-gray-200 place-self-end"
                 @click="cancel"
@@ -81,7 +83,7 @@ onUnmounted(() => {
                 class="text-white py-32 px-4 hover:bg-black/50"
                 @click="prevImage"
             >
-                <ChevronLeftIcon class="h-12 w-12" />
+                <ChevronLeftIcon class="h-12 w-12 max-w-[10vw]" />
             </button>
 
             <div class="w-full h-full grid place-items-center">
@@ -97,23 +99,22 @@ onUnmounted(() => {
                 class="text-white py-32 px-4 hover:bg-black/50"
                 @click="nextImage"
             >
-                <ChevronRightIcon class="h-12 w-12" />
+                <ChevronRightIcon class="h-12 w-12 max-w-[10vw]" />
             </button>
         </div>
-        <div id="gallery-footer">
-            <div class="flex gap-8 align-middle items-center overflow-hidden relative left-0 right-0 py-4 bg-gray-800/50">
-                <div
-                    v-for="(submission, index) in props.submissions"
-                    :key="index"
-                    class="w-16 h-16 rounded-[2rem] overflow-hidden hover:rounded-2xl transition-[border-radius] duration-250 ease-in-out cursor-pointer border-gray-800 border-4"
-                >
-                    <img
-                        :src="submission.image"
-                        :alt="submission.destination?.name"
-                        class="object-cover w-full h-full scale-125"
-                        @click="currentImage = index"
-                    />
-                </div>
+        <div id="gallery-footer" class="w-full grid place-items-center grid-cols-6 md:grid-cols-12 gap-2 p-2 bg-gray-800/50">
+            <div
+                v-for="(submission, index) in props.submissions"
+                :key="index"
+                class="w-16 h-16 rounded-[2rem] overflow-hidden hover:rounded-2xl transition-[border-radius] duration-250 ease-in-out cursor-pointer border-gray-800 border-4"
+                :class="{ 'border-teal-500 rounded-2xl': index === currentImage }"
+            >
+                <img
+                    :src="submission.image"
+                    :alt="submission.destination?.name"
+                    class="object-cover w-full h-full scale-125"
+                    @click="currentImage = index"
+                />
             </div>
         </div>
     </div>

@@ -24,9 +24,11 @@ const filteredContestants = computed(() => {
     });
 });
 
-const openGalleryModal = (submissions: Submission[], startSubmission?: Submission) => {
+const openGalleryModal = (contestant: Contestant, startSubmission?: Submission) => {
+    if (!contestant.submissions) return;
+
     if (startSubmission) {
-        const index = submissions.findIndex(
+        const index = contestant.submissions.findIndex(
             (submission) => submission.id === startSubmission.id
         );
 
@@ -35,12 +37,12 @@ const openGalleryModal = (submissions: Submission[], startSubmission?: Submissio
         }
     }
 
-    modalSubmissions.value = submissions;
+    modalContestant.value = contestant;
     showModal.value = true;
 };
 
 const showModal = ref(false);
-const modalSubmissions = ref<Submission[]>([]);
+const modalContestant = ref<Contestant | null>(null);
 const modalSubmissionsStart = ref(0);
 const search = ref("");
 </script>
@@ -77,7 +79,7 @@ const search = ref("");
                             :username="contestant.username"
                             :avatar="contestant.avatar"
                             :submissions="contestant.submissions"
-                            @show-gallery="(submission) => openGalleryModal(contestant.submissions ?? [], submission)"
+                            @show-gallery="(submission) => openGalleryModal(contestant, submission)"
                         />
                     </div>
                 </main>
@@ -108,9 +110,10 @@ const search = ref("");
         </div>
     </div>
     <GalleryModal
-        v-if="showModal && modalSubmissions"
-        :submissions="modalSubmissions"
+        v-if="showModal && modalContestant?.submissions"
+        :submissions="modalContestant.submissions"
         :start="modalSubmissionsStart"
+        :title="modalContestant.nickname ?? modalContestant.username"
         @close="showModal = false"
     />
 </template>
