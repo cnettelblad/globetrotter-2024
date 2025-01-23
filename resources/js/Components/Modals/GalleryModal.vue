@@ -70,9 +70,11 @@ onUnmounted(() => {
         <div class="grid grid-cols-6 w-full" id="gallery-header">
             <div class="col-start-2 bg-gray-800 col-span-4 text-white p-4 w-full text-center whitespace-nowrap overflow-hidden overflow-ellipsis">
                 <h2 class="text-4xl font-bold">{{ title }}</h2>
-                <span>{{ submissions[currentImage].destination?.name }}
+                <span>
+                    {{ submissions[currentImage].destination?.name }}
                     <Emoji>{{ submissions[currentImage].destination?.emoji }}</Emoji>
-                    in {{ submissions[currentImage].month }}</span>
+                    in {{ submissions[currentImage].month }}
+                </span>
             </div>
             <button
                 class="text-gray-200 place-self-end"

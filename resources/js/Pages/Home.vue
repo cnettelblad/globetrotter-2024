@@ -6,6 +6,7 @@ import TextInput from "@/Components/Form/TextInput.vue";
 import { computed, ref } from "vue";
 import { Contestant, ResourceCollection, Submission } from "@/types";
 import ApplicationLogo from "@/Components/ApplicationLogo.vue";
+import { sortByMonthName } from "@/utils/sortByMonthName";
 
 const props = defineProps<{
     contestants: ResourceCollection<Contestant>
@@ -111,7 +112,7 @@ const search = ref("");
     </div>
     <GalleryModal
         v-if="showModal && modalContestant?.submissions"
-        :submissions="modalContestant.submissions"
+        :submissions="modalContestant.submissions.sort((a, b) => sortByMonthName(a.month, b.month))"
         :start="modalSubmissionsStart"
         :title="modalContestant.nickname ?? modalContestant.username"
         @close="showModal = false"
