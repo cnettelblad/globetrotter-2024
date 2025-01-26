@@ -68,7 +68,7 @@ onUnmounted(() => {
         class="flex flex-col overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-screen max-h-screen"
     >
         <div class="grid grid-cols-6 w-full" id="gallery-header">
-            <div class="col-start-2 bg-gray-800 col-span-4 text-white p-4 w-full text-center whitespace-nowrap overflow-hidden overflow-ellipsis">
+            <div class="col-start-2 col-span-4 text-white p-4 w-full text-center whitespace-nowrap overflow-hidden overflow-ellipsis">
                 <h2 class="text-4xl font-bold">{{ title }}</h2>
                 <span>
                     {{ submissions[currentImage].destination?.name }}
