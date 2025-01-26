@@ -1,1 +1,0 @@
-import{_ as e}from"./_plugin-vue_export-helper-DlAUqK2U.js";import{o as s,g as r,r as t}from"./app-_oh0oqnp.js";const n={},c={class:"font-emoji"};function a(o,_){return s(),r("span",c,[t(o.$slots,"default")])}const i=e(n,[["render",a]]);export{i as E};
