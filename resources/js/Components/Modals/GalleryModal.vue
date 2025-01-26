@@ -77,7 +77,7 @@ onUnmounted(() => {
                 </span>
             </div>
             <button
-                class="text-gray-200 place-self-end"
+                class="text-gray-200 place-self-end self-start p4"
                 @click="cancel"
                 aria-label="Close"
             >
@@ -126,5 +126,5 @@ onUnmounted(() => {
             </div>
         </div>
     </div>
-    <div class="bg-gray-900/50 fixed inset-0 z-40"></div>
+    <div class="bg-gray-900/90 fixed inset-0 z-40"></div>
 </template>
