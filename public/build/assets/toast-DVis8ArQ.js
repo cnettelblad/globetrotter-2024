@@ -1,0 +1,1 @@
+import{M as e}from"./app-l4YdmmWh.js";const i=e({toasts:[],count:0,addToast(t,s="success"){const o=++this.count;this.toasts.push({message:t,type:s,id:o}),setTimeout(()=>{this.removeToast(o)},1e4)},removeToast(t){this.toasts=this.toasts.filter(s=>s.id!==t)}});export{i as t};
