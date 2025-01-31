@@ -7,6 +7,7 @@ use App\Http\Controllers\ImportController;
 use App\Http\Controllers\ImportFailureController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SubmissionController;
+use App\Http\Controllers\SubmissionImageController;
 use App\Models\Contestant;
 use App\Models\ImportFailure;
 use App\Models\Submission;
@@ -18,6 +19,8 @@ use Inertia\Inertia;
 Route::get('/', HomeController::class)->name('home');
 
 Route::get('/gallery', GalleryController::class)->name('gallery');
+
+Route::get('/images/submissions/{submission}', SubmissionImageController::class)->name('submissions.image');
 
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', function () {

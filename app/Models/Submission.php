@@ -39,17 +39,6 @@ class Submission extends Model
         return $this->belongsTo(Destination::class);
     }
 
-    public function image(): Attribute
-    {
-        return Attribute::make(
-            get: function (string|null $image) {
-                return $image
-                    ? Storage::url($image)
-                    : null;
-            }
-        );
-    }
-
     public function storeImage(UploadedFile $image)
     {
         $destination = 'submissions/' . uniqid() . '.webp';
