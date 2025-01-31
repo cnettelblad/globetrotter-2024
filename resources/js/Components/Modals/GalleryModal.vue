@@ -41,6 +41,12 @@ const nextImage = () => {
     currentImage.value = (currentImage.value + 1) % props.submissions.length;
 };
 
+const preloadFullImage = (url: string | undefined) => {
+    if (!url) return;
+    const img = new Image();
+    img.src = url;
+};
+
 const remainingHeight = ref("100vh"); // Default to full viewport height.
 
 const recalculateHeight = () => {
@@ -118,10 +124,11 @@ onUnmounted(() => {
                 :class="{ 'border-teal-500 rounded-2xl': index === currentImage }"
             >
                 <img
-                    :src="submission.image"
+                    :src="submission.image + '?size=128'"
                     :alt="submission.destination?.name"
-                    class="object-cover w-full h-full scale-125"
+                    class="object-cover w-full scale-125"
                     @click="currentImage = index"
+                    @mouseover="preloadFullImage(submission.image)"
                 />
             </div>
         </div>
