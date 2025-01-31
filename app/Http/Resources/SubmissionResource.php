@@ -5,6 +5,7 @@ namespace App\Http\Resources;
 use App\Models\Submission;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * @mixin Submission
@@ -26,7 +27,7 @@ class SubmissionResource extends JsonResource
         return [
             'id' => $this->id,
             'month' => $this->month,
-            'image' => $this->image,
+            'image' => route('submissions.image', ['submission' => $this->id]),
             'destination' => new DestinationResource($this->whenLoaded('destination')),
         ];
     }
