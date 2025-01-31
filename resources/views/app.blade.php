@@ -16,6 +16,12 @@
     <link rel="icon" type="image/x-icon" href="/favicon.ico" sizes="32x32">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&display=swap" rel="stylesheet">
 
+    <!-- Meta -->
+    <meta name="og:title" content="Wanderlust - Globetrotter 2024">
+    <meta name="og:name" content="Wanderlust">
+    <meta name="og:description" content="Browse the 2024 submissions for Wanderlust's Globetrotter challenge!">
+    <meta name="og:image" content="{{ asset('logo.png') }}">
+
     <!-- Scripts -->
     @routes
     @vite(['resources/js/app.ts', "resources/js/Pages/{$page['component']}.vue"])
