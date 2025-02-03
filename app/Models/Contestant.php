@@ -36,6 +36,8 @@ class Contestant extends Model
 
     /**
      * Convert the avatar attribute to a full discord URL.
+     *
+     * @return Attribute<string, string>
      */
     protected function avatar(): Attribute
     {
